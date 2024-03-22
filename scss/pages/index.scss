@@ -1,0 +1,91 @@
+.estado {
+
+    .mes {
+        background-color: $azul;
+        color: $blanco;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        height: 24px;
+        line-height: 24px;
+        padding: 8px;
+        border-top: 1px solid $blanco;
+    }
+
+    .balance {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        &-card {
+            border-radius: 10px;
+            box-shadow: 1px 1px 5px $sombra-clara;
+            padding: 4px;
+            margin-top: 16px;
+            text-align: center;
+            width: 100px;
+            height: 80px;
+            background-color: $blanco;
+
+
+            span {
+                display: block;
+
+            }
+
+            &-titulo {
+                font-size: 0.8rem;
+                text-transform: capitalize;
+            }
+
+            &-monto {
+                padding-top: 16px;
+                font-weight: 700;
+                // font-size: 1rem;
+                color: $azul;
+            }
+        }
+    }
+}
+
+.agregar {
+    padding: 32px;
+
+    .agregar-btn {
+        background-color: $amarillo;
+        padding: 16px;
+        text-align: center;
+        width: 160px;
+        margin-inline: auto;
+        border-radius: 8px;
+        height: 40px;
+        line-height: 40px;
+        white-space: nowrap;
+    }
+}
+
+.menu {
+    display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+
+    &-card {
+        border-radius: 10px;
+            box-shadow: 1px 1px 5px $sombra-clara;
+            padding: 4px;
+            margin-top: 16px;
+            text-align: center;
+            width: 100px;
+            height: 80px;
+            background-color: $blanco;
+
+        .bi {
+            display: block;
+            font-size: 1.5rem;
+
+        }
+    }
+
+}

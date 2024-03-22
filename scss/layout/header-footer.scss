@@ -1,0 +1,30 @@
+.header {
+    background-color: $azul-claro;
+    color: $blanco;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+
+    span {
+        padding: 8px;
+    }
+}
+
+
+footer {
+    background-color: $azul;
+    color: $blanco;
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+
+
+    span {
+        display: block;
+        padding: 4px
+    }
+
+    ;
+}
