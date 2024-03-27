@@ -1,0 +1,14 @@
+.filtros {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap; 
+
+    .filtro {
+        font-size: 0.7rem;
+        padding: 4px;
+        border-radius: 8px;
+        background-color: $blanco;
+        box-shadow: 0 0 5px $sombra-clara;
+
+    }
+}

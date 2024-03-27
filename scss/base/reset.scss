@@ -1,14 +1,22 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
 }
 
 body {
-    background-color: $gris;
+
+    @extend .sarala-regular;
 }
 
-a {
-    text-decoration: none;
+.link-claro {
     color: $blanco;
+    text-decoration: none;
+}
+
+.link-oscuro {
+
+    color: $negro;
+    text-decoration: none;
+
 }
