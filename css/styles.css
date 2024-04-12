@@ -39,12 +39,17 @@ main {
 .header {
   background-color: #2793F2;
   color: #fff;
+  height: 80px;
+}
+.header div {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
+  max-width: 600px;
+  width: 80%;
+  margin-inline: auto;
 }
-.header span {
+.header div span {
   padding: 8px;
 }
 
@@ -146,24 +151,6 @@ footer span {
   display: block;
   font-size: 1.8rem;
   color: #F20CB5;
-}
-
-.form-agregar-movimiento {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-}
-
-.filtros {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.filtros .filtro {
-  font-size: 0.7rem;
-  padding: 4px;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 0 5px #bbb;
 }
 
 /*# sourceMappingURL=styles.css.map */

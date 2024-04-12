@@ -1,14 +1,21 @@
 .header {
     background-color: $azul-claro;
     color: $blanco;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     height: 80px;
-
-    span {
-        padding: 8px;
+    
+    div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 600px;
+        width: 80%;
+        margin-inline: auto;
+    
+        span {
+            padding: 8px;
+        }
     }
+
 }
 
 
