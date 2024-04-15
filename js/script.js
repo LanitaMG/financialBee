@@ -16,7 +16,7 @@ Este tutorial te guiará para que puedas:
 // Funciones
 
 // Función exit: mensaje de despedida de la aplicación
-function exit(result) {
+const exit = (result) => {
   console.log("Cierre de la aplicación con resultado: ", result);
   let msg = "";
   if (result === "Success") {
@@ -160,7 +160,7 @@ A continuación podrás eliminar y agregar elementos para que Bee se adapte a tu
 Cancelar para omitir este paso
   `;
   if (confirm(msg)) {
-    //Listar ELEMENTOS predefinidas para conservar o eliminar
+    //Listar elementos predefinidos para conservar o eliminar
     let elementsSelection = [];
     arr.forEach((element) => {
       msg = `Estás editando: ${topic} 
