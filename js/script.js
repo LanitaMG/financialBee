@@ -144,8 +144,7 @@ Por favor introduce una nueva contraseña:";
   return createPasswordSuccess;
 }
 
-// function editArrays: gestiona la edición de los arrays con opciones personalizables
-
+// function editArrays: gestiona la edición de los arrays con los datos personalizables por el usuario
 function editArrays(arr, msgInfo, topic) {
   // Mensaje inicial
   let msg = msgInfo;
@@ -268,7 +267,7 @@ Identificar las categorías que generan mayor egreso es crucial para tu economí
 
 
 
-
+// Función principal que controla la secuencia de pasos del tutorial.
 function main() {
   alert(welcome);
   if (createUser()) {
