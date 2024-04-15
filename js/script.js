@@ -1,232 +1,286 @@
-
 //Variables globales
 
-let expensesCategories = ["Alquiler", "Expensas", "Supermercado", "Gimnasio", 'Indumentaria', 'Mascotas', 'Salidas', 'Hogar', 'Impuestos']
-let incomeCategories = ['Sueldo', 'Intereses MP', 'Intereses PPay', 'Inversiones', 'Otros']
-let wallets = ['Efectivo', 'Mercado Pago', 'Personal Pay', 'Débito Visa Santander', 'Crédito Visa Santander']
-let user
+let expensesCategories = ["Alquiler", "Expensas", "Supermercado", "Gimnasio"];
+let incomeCategories = ["Sueldo", "Intereses MP", "Otros"];
+let wallets = ["Efectivo", "Mercado Pago", "Crédito Visa Santander"];
+let user = "";
 
-
+const welcome = `
+¡Bienvenido a Financial Bee!\n
+Bienvenido a la aplicación que te permitirá organizar de forma rápida y práctica todos tus movimientos financieros.\n
+Este tutorial te guiará para que puedas:
+* Crear tu nombre de usuario y contraseña
+* Cargar billeteras electrónicas, bancarias o pseudo-billeteras.
+* Ajustar las categorías de ingresos y egresos a tu manera
+`;
 
 // Funciones
 
-/* Función formatString: Formatea el texto ingresado por el usuario, eliminando espacios y capitalizando la letra inicial
- Función flecha - Condicional If */
-const formatString = (str)  => {
-    str = str.trim()
-    if (str.length > 0) {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    }
+// Función exit: mensaje de despedida de la aplicación
+function exit(result) {
+  console.log("Cierre ", result);
+  let msg = "";
+  if (result === "Success") {
+    msg = `
+    ¡Excelente trabajo ${user}!
+    Nos vemos en la próxima preentrega para empezar a cargar movimientos
+
+    Financial Bee
+    `;
+  } else {
+    msg = `
+    ¡Nos vemos en la próxima!
+    
+    Financial Bee
+    `;
+  }
+  alert(msg);
 }
 
-/* Función createUser: Guía al usuario en la creación de nombre de usuario (mínimo 3 caracteres) y de una contraseña (mínimo 6 caracteres).
-El usuario tiene 3 oportunidades para crear exitosamente el nombre y la contraseña.
-Función declarativa - Condicional If-Else - Bucle While
-*/
+// function userAnswerTest: recibe la respuesta ingresada por el usuario en un prompt y verifica que contenga un valor y que cumpla con la cantidad mínima de caracteres solicitados.
+function userAnswerTest(userAnswer, chs) {
+  testResult = false;
+  if (userAnswer !== undefined && userAnswer !== null && userAnswer !== "") {
+    userAnswer = userAnswer.trim();
+    if (userAnswer.length >= chs) {
+      testResult = true;
+    }
+  }
+  console.log("userAnswerTest: ", testResult);
+  return testResult;
+}
+
+// function userAnswerPrompts: administra la interacción con el usuario cuando se solicita el ingreso de un dato por prompt.
+// Gestiona los mensajes inicial y de aviso de error/reintento. Verifica validez del dato y cantidad de intentos.
+function userAnswerPrompts(msg1, msg2, chs, iter) {
+  let userAnswer = prompt(msg1);
+  let it = 1;
+  if (userAnswerTest(userAnswer, chs)) {
+    userAnswer = userAnswer.trim();
+    console.log("it ",it,userAnswer);
+  } else {
+    while (!userAnswerTest(userAnswer, chs) && it < iter) {
+      userAnswer = prompt(msg2);
+      console.log("it ", it, userAnswer);
+      it++;
+    }
+    if (it < iter) {
+      userAnswer = userAnswer.trim();
+    } else {
+      userAnswer = null;
+    }
+  }
+  console.log("user: ", userAnswer);
+  return userAnswer;
+}
+
+//function createUser: gestiona la creación del nombre de usuario y contraseña.
 function createUser() {
-    let createUserSuccess = false
-
-    // Creación del nombre de usuario
-    user = formatString(prompt("Primero crearemos tus credenciales de ingreso.\nPor favor ingresa un nombre de usuario (mínimo 3 caracteres):"))
-    let attempts = 1
-
-    while (user.length < 3 && attempts < 3) {
-        user = formatString(prompt("El usuario debe tener mínimo 3 caracteres. Por favor ingresa un nombre más largo:"))
-        attempts++
+  let createUserSuccess = false;
+  const msg = `
+El primer paso es crear tu usuario y contraseña.
+Cancelar para salir
+`;
+  const userChoice = confirm(msg);
+  if (userChoice) {
+    const msg1 = "Por favor introduce un nombre de usuario:";
+    const msg2 = `El nombre debe poseer al menos 3 letras.
+    Por favor introduce tu nombre de usuario:
+    `;
+    const iter = 3;
+    const chs = 3;
+    user = userAnswerPrompts(msg1, msg2, chs, iter);
+    if (user == null) {
+      exit("noSuccess");
+    } else {
+      user = user.charAt(0).toUpperCase() + user.slice(1).toLowerCase();
+      createUserSuccess = true;
     }
-
-    if (attempts < 3) {
-        alert("¡Bienvenido "+ user + "!\nAhora crearemos tu contraseña")
-        
-        
-        // Creación de la contraseña
-        let password = prompt("Por favor ingresa una contraseña (mínimo 6 caracteres):").trim()
-        attempts = 1
-        while (password.length < 6 && attempts < 3) {
-            password = prompt("La contraseña debe tener mínimo 6 caracteres. Por favor ingresa una contraseña más larga:").trim()
-            attempts++;
-        }
-        if (attempts < 3) {
-            //Solicita ingresar nuevamente la contraseña y compara con la creada en el paso anterior.
-            let password2 = prompt("Vamos a verificar tu credencial.\nIngresa nuevamente tu contraseña:").trim()
-            attempts = 1
-            
-            while (password !== password2 && attempts < 3) {
-                password2  = prompt("La verificación no tuvo éxito.\nIngresa nuevamente tu contraseña:").trim()
-                attempts++
-            }
-            if (attempts < 3) {
-                alert("¡Felicitaciones " + user + "!\n Tu cuenta ha sido creada con éxito. ")
-                createUserSuccess = true
-            } else {
-                alert("Parece que hoy no estás inspirado. Vuelve a iniciar la aplicación para intentar nuevamente.")
-            }
-        }
-        else {
-            alert("Parece que hoy no estás inspirado. Vuelve a iniciar la aplicación para intentar nuevamente.")
-        }
-    }
-    else {
-        alert("Parece que hoy no estás inspirado. Vuelve a iniciar la aplicación para intentar nuevamente.")
-    }
-    return createUserSuccess
+  } else {
+    exit("noSuccess");
+  }
+  console.log("user final: ", user);
+  console.log("createUserSuccess: ", createUserSuccess);
+  return createUserSuccess;
 }
 
-/* Función setWallets: permite personalizar el listado de billeteras.
-Muestra las billeteras predefinidas, luego pregunta una por una cual se desea conservar y finalmente permite agregar nuevas
-Función declarativa - Condicional If-Else - Bucles forEach y while
-*/
-function setWallets() {
-    let msg = user + ", vamos a configurar tus billeteras.\n"
-    msg += "Las billeteras son los medios de pago y cobro que utilizas habitualmente\n"
-    msg += "Te mostramos las billeteras predefinidas por la aplicación: \n\n"
-    wallets.forEach(wallet => {
-        msg += " - " + wallet + "\n"
-    });
-    msg += "\nA continuación podrá eliminar y agregar billeteras para que Bee se adapte a tu estilo de vida financiera"
-    alert(msg)
-    let keepWallets = []
-    wallets.forEach(wallet => {
-        let keepWallet = confirm("¿Desea conservar la billetera " + wallet+"?\nAceptar para conservar - Cancelar para eliminar") 
-        if (keepWallet) {
-            keepWallets.push(wallet)
+// function createPassword: gestiona la creación de una contraseña y la validación de la reiteración de contraseña.
+function createPassword() {
+  let createPasswordSuccess = false;
+  const msg = `
+  ${user}, vamos a proteger tu cuenta con una contraseña.
+  Debe contener al menos 6 caracteres.
+  
+  Cancelar para salir"
+  `;
+  const userChoice = confirm(msg);
+  if (userChoice) {
+    const msg1 = `Por favor introduce una contraseña:`;
+    const msg2 = `La contraseña debe poseer al menos 6 caracteres.
+    Por favor introduce una nueva contraseña:";
+    `;
+    const iter = 3;
+    const chs = 6;
+    let password = userAnswerPrompts(msg1, msg2, chs, iter);
+    if (password == null) {
+      exit("noSuccess");
+    } else {
+      /* Validación de contraseña*/
+      let password2 = prompt("Por favor, escribe nuevamente la contraseña:");
+      console.log(password, " == ", password2);
+      if (password == password2) {
+        createPasswordSuccess = true;
+      } else {
+        password2 = prompt(
+          "Los valores no coinciden. Por favor escribe nuevamente la contraseña:"
+        );
+        if (password == password2) {
+          createPasswordSuccess = true;
+        } else {
+          exit("noSuccess");
         }
-    })
-    wallets = keepWallets
-    msg = "¡Muy bien "+ user + "! Estas son las billeteras que dicidiste conservar.\n"
-    wallets.forEach(wallet => {
-        msg += " - " + wallet + "\n"
-    });
-    msg += "\nA continuación podrás agregar otras billeteras"
-    alert(msg)
-    let newWallet = prompt("Por favor ingrese el nombre de la billetera que desea agregar. \nSi no desea agregar otra billetera presione Cancelar") 
-    while (newWallet !== null) {
-        newWallet = formatString(newWallet)
-        if (newWallet.length > 0) {
-            wallets.push(newWallet)
-        } 
-        
-            
-        newWallet = prompt("Por favor ingrese el nombre de la billetera que desea agregar. \nSi no desea agregar otra billetera presione Cancelar") 
+      }
     }
-    wallets.sort()
-    msg = '¡Excelente trabajo ' + user +'!\n'
-    msg += 'Estas son tus billeteras:\n'
-    wallets.forEach(wallet => {
-        msg += " - " + wallet + "\n"
-    });
-    alert(msg)
-    }    
-
-
-
-/* Función setIncomeCategories: permite personalizar las categorías asociadas a los ingresos que percibe el usuario.
-Función declarativa - Bucles for y for-each- Condicional if-else
-*/
-function setIncomeCategories() {
-    let msg = user + ", es momento de personalizar las categorías de tus ingresos.\n"
-    msg += "Te mostramos las categorías predefinidas por la aplicación: \n\n"
-    incomeCategories.forEach(category => {
-        msg += " - " + category + "\n"
-    });
-    msg += "\nA continuación podrás eliminar y agregar las categorías de tus ingresos."
-    alert(msg)
-    let keepCategories = []
-
-    for (let index = 0; index < incomeCategories.length; index++) {
-        let keepCategory = confirm("¿Desea conservar la categoría " + incomeCategories[index] +"?\n\nAceptar para conservar - Cancelar para eliminar") 
-        if (keepCategory) {
-            keepCategories.push(incomeCategories[index])
-        }
-    }
-    incomeCategories = keepCategories
-    msg = "¡Muy bien "+ user + "! Estas son las categorías de ingresos que dicidiste conservar.\n"
-    incomeCategories.forEach(category => {
-        msg += " - " + category + "\n"
-    });
-    msg += "\nA continuación podrás agregar nuevas categorías"
-    alert(msg)
-    let newCategory = prompt("Por favor ingrese el nombre de la categoría que desea agregar. \nSi no desea agregar otra categoría presione Cancelar") 
-    while (newCategory !== null) {
-        newCategory = formatString(newCategory)
-        if (newCategory.length > 0) {
-            incomeCategories.push(newCategory)
-        }
-        newCategory = prompt("Por favor ingrese el nombre de la categoría que desea agregar. \nSi no desea agregar otra categoría presione Cancelar") 
-    }
-    incomeCategories.sort()
-    msg = '¡Excelente trabajo ' + user +'!\n'
-    msg += 'Estas categorías reflejan tus ingresos:\n'
-    incomeCategories.forEach(category => {
-        msg += " - " + category + "\n"
-    });
-    alert(msg)
-
+  }
+  return createPasswordSuccess;
 }
 
-/* Función setIncomeCategories: permite personalizar las categorías asociadas a los ingresos que percibe el usuario.
-Función declarativa - Bucles for y for-each- Condicional if-else
-*/
-function setExpensesCategories() {
-    let msg = user + ", es momento de personalizar las categorías de tus gastos.\n"
-    msg += "Te mostramos las categorías predefinidas por la aplicación: \n\n"
-    expensesCategories.forEach(category => {
-        msg += " - " + category + "\n"
-    });
-    msg += "\nA continuación podrá eliminar y agregar las categorías de tus egresos."
-    alert(msg)
-    let keepCategories = []
+// function editArrays: gestiona la edición de los arrays con opciones personalizables
 
-    for (let index = 0; index < expensesCategories.length; index++) {
-        let keepCategory = confirm("¿Desea conservar la categoría " + expensesCategories[index] +"?\n\nAceptar para conservar - Cancelar para eliminar") 
-        if (keepCategory) {
-            keepCategories.push(expensesCategories[index])
-        }
-    }
-    expensesCategories = keepCategories
-    msg = "¡Muy bien "+ user + "! Estas son las categorías de gastos que dicidiste conservar.\n"
-    expensesCategories.forEach(category => {
-        msg += " - " + category + "\n"
+function editArrays(arr, msgInfo, topic) {
+  // Mensaje inicial
+  let msg = msgInfo;
+  msg += `Los siguientes elementos ya se encuentran en la app:
+  `;
+  arr.forEach((elem) => {
+    msg += " - " + elem + "\n";
+  });
+  msg += `
+  A continuación podrás eliminar y agregar elementos para que Bee se adapte a tu estilo de vida financiera
+  \n
+  Cancelar para omitir este paso
+  `;
+  if (confirm(msg)) {
+    //Listar ELEMENTOS predefinidas para conservar o eliminar
+    let elementsSelection = [];
+    arr.forEach((element) => {
+      msg = `
+    Estás editando: ${topic} 
+    Deseas conservar: ${element}?
+    Aceptar para conservar - Cancelar para eliminar
+    `;
+      let userChoice = confirm(msg);
+      if (userChoice) {
+        elementsSelection.push(element);
+      }
     });
-    msg += "\nA continuación podrás agregar nuevas categorías"
-    alert(msg)
-    let newCategory = prompt("Por favor ingrese el nombre de la categoría que desea agregar. \nSi no desea agregar otra categoría presione Cancelar") 
-    while (newCategory !== null) {
-        newCategory = formatString(newCategory)
-        if (newCategory.length > 0) {
-            incomeCategories.push(newCategory)
-        }
-        newCategory = prompt("Por favor ingrese el nombre de la categoría que desea agregar. \nSi no desea agregar otra categoría presione Cancelar") 
-    }
-    expensesCategories.sort()
-    msg = '¡Excelente trabajo ' + user +'!\n'
-    msg += 'Estas categorías reflejan tus ingresos:\n'
-    expensesCategories.forEach(category => {
-        msg += " - " + category + "\n"
-    });
-    alert(msg)
 
+    // Mostrar elementos conservados
+    msg = `
+  Estás editando: ${topic}
+  Estos son los elementos seleccionados:
+  `;
+    elementsSelection.forEach((elem) => {
+      msg += ` - ${elem}\n`;
+    });
+    msg += "\nA continuación podrás agregar elementos.";
+    alert(msg);
+
+    //Agregar nuevos elementos
+    const msg1 = `
+  Estás editando: ${topic}
+  Por favor ingrese el nombre del nuevo elemento.
+  Si no desea agregar otro elemento presione Cancelar `;
+    const msg2 = `
+  Estás editando: ${topic}
+  El nombre debe poseer al menos 3 letras.
+  Por favor introduce nuevamente un nombre para el elemento:`;
+    const iter = 2;
+    const chs = 3;
+    let newElement = userAnswerPrompts(msg1, msg2, chs, iter);
+    while (newElement !== null) {
+      newElement =
+        newElement.charAt(0).toUpperCase() + newElement.slice(1).toLowerCase();
+      newElement = userAnswerPrompts(msg1, msg2, chs, iter);
+    }
+    if (newElement == null) {
+      // Mostrar elementos conservados
+      msg = `
+  ${topic}
+  Estos son los elementos que tendrás disponible:
+  `;
+      elementsSelection.forEach((elem) => {
+        msg += ` - ${elem}\n`;
+      });
+      msg += `\nRecuerda que siempre podrás volver a editar esta sección.`;
+      alert(msg);
+    }
+    return elementsSelection;
+  } else {
+    return arr;
+  }
 }
 
+// function editWallets: lanza la función editArrays con los parámetros para Billeteras
+function editWallets() {
+  let msgInfo = `
+  ${user}, vamos a configurar tus billeteras.
+  Las billeteras son los medios de pago y cobro que utilizas habitualmente
+  Estas son las preconfiguradas en la app:
+  `;
+  wallets = editArrays(wallets, msgInfo, "BILLETERAS");
+}
 
+// function editIncomeCategories: lanza la función editArrays con los parámetros para Categorías de Ingresos
+function editIncomeCategories() {
+  let msgInfo = `
+  ${user}, vamos a asignarle categorías a tus ingresos.
+  Define todas las categorías que necesites para reflejar el origen de tus ingresos.
+  Estas son las categorías ya disponibles en la app:
+  `;
+  incomeCategories = editArrays(
+    incomeCategories,
+    msgInfo,
+    "CATEGORÍAS DE INGRESO"
+  );
+}
+
+// function editExpensesCategories: lanza la función editArrays con los parámetros para Categorías de Egresos
+function editExpensesCategories() {
+  let msgInfo = `
+  ${user} ¿Sabes en qué gastas tu dinero?
+  Identificar las categorías que generan mayor egreso es crucial para tu economía. Crea todas las categorías necesarias para futuros análisis.
+  Estas son las categorías ya disponibles en la app:
+  `;
+  expensesCategories = editArrays(
+    expensesCategories,
+    msgInfo,
+    "CATEGORÍAS DE EGRESOS"
+  );
+}
 
 function main() {
-    let msg = "¡Bienvenido a Financial Bee!\n\n"
-    msg += "Te invitamos a recorrer este pequeño tutorial que te ayudará a configurar la aplicación para que se ajuste a tus características financieras."
-    alert(msg)
-    if (createUser()) {
-        setWallets()
-        setIncomeCategories()
-        setExpensesCategories()
-        msg = "¡Misión cumplida " + user + "!\n\n"
-        msg += "La aplicación ya se encuentra personalizada.\n"
-        msg += "En la próxima preentrega podrás registrar los movimientos financieros que realizas diariamente.\n"
-        alert(msg)
+  alert(welcome);
+  if (createUser()) {
+    if (createPassword()) {
+      const msg = `
+      ¡Tu usuario ha sido creado con éxito!
+
+      ${user} te invitamos a ajustar los parámetros de la aplicación para que se adapten a tu vida financiera.
+      
+      ¿Desea continuar con la personalización de la aplicación?"
+      `;
+      let userChoice = confirm(
+      );
+      if (userChoice) {
+        editWallets();
+        editIncomeCategories();
+        editExpensesCategories();
+        exit("Success");
+      } 
+      else exit("Success");
     }
-
-    
-
-    
+  }
 }
 
-main ()
+main();
