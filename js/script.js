@@ -1,294 +1,471 @@
 //Variables globales
+const mainSection = document.getElementById("main");
 
-let expensesCategories = ["Alquiler", "Expensas", "Supermercado", "Gimnasio"];
-let incomeCategories = ["Sueldo", "Intereses MP", "Otros"];
-let wallets = ["Efectivo", "Mercado Pago", "Crédito Visa Santander"];
-let user = "";
+const walletType = [
+  "Efectivo",
+  "Bancaria",
+  "Virtual",
+  "Tarjeta de Crédito",
+  "Tarjeta de Débito",
+  "Otra",
+];
+const categoryType = ["Fijo", "Variable"];
 
-const welcome = `¡Bienvenido a Financial Bee!\n
-Bienvenido a la aplicación que te permitirá organizar de forma rápida y práctica todos tus movimientos financieros.\n
-Este tutorial te guiará para que puedas:
-* Crear tu nombre de usuario y contraseña
-* Cargar billeteras electrónicas, bancarias o pseudo-billeteras.
-* Ajustar las categorías de ingresos y egresos a tu manera
-`;
+// Clases
+
+// Usuario
+class User {
+  constructor(name, password, email) {
+    this.name = name;
+    this.password = password;
+    this.email = email;
+  }
+
+  // Método que devuelve el nombre de usuario
+  getUserName() {
+    return this.name;
+  }
+}
+
+// Billeteras
+class Wallet {
+  constructor(name, type, active) {
+    this.name = name;
+    this.type = type;
+    this.active = active;
+  }
+
+  getName() {
+    return this.name;
+  }
+  getType() {
+    return this.type;
+  }
+  getStatus() {
+    return this.active;
+  }
+
+  setType(type) {
+    this.type = type;
+  }
+  setStatus(active) {
+    this.active = active;
+  }
+}
+
+class movCategory {
+  constructor(name, type, active) {
+    this.name = name;
+    this.type = type;
+    this.active = active;
+  }
+
+  getName() {
+    return this.name;
+  }
+  getType() {
+    return this.type;
+  }
+
+  getStatus() {
+    return this.active;
+  }
+
+  setStatus(active) {
+    this.active = active;
+  }
+}
 
 // Funciones
+// Inicializar local storage
+function initData() {
+  let wallets = [];
+  wallets.push(new Wallet("Efectivo", "Efectivo", true));
+  wallets.push(new Wallet("Mercado Pago", "Virtual", true));
+  wallets.push(new Wallet("Personal Pay", "Virtual", false));
+  wallets.push(new Wallet("Tarjeta Naranja", "Virtual", false));
+  wallets.push(new Wallet("Ualá", "Bancaria", true));
+  wallets.push(new Wallet("BBVA Francés", "Tarjeta de Débito", true));
 
-// Función exit: mensaje de despedida de la aplicación
-const exit = (result) => {
-  console.log("Cierre de la aplicación con resultado: ", result);
-  let msg = "";
-  if (result === "Success") {
-    msg = `¡Excelente trabajo ${user}!
-Nos vemos en la próxima preentrega para empezar a cargar movimientos.
+  localStorage.setItem("wallets", JSON.stringify(wallets));
 
-Financial Bee
-    `;
-  } else {
-    msg = `El usuario no pudo ser creado, pero puedes volver a intentarlo.
-¡Nos vemos en la próxima!
-    
-Financial Bee
-    `;
-  }
-  alert(msg);
+  let expensesCategories = [];
+  let incomeCategories = [];
+
+  incomeCategories.push(new movCategory("Sueldo", "Fijo", true));
+  incomeCategories.push(new movCategory("Intereses", "Fijo", true));
+  incomeCategories.push(new movCategory("Monotributo", "Variable", true));
+  incomeCategories.push(new movCategory("Reintegro", "Variable", true));
+  expensesCategories.push(new movCategory("Alquiler", "Fijo", true));
+  expensesCategories.push(new movCategory("Supermercado", "Fijo", true));
+  expensesCategories.push(new movCategory("Indumentaria", "Fijo", true));
+  expensesCategories.push(new movCategory("Gimnasio", "Variable", true));
+  expensesCategories.push(new movCategory("Salidas", "Variable", true));
+
+  localStorage.setItem("incomeCategories", JSON.stringify(incomeCategories));
+  localStorage.setItem(
+    "expensesCategories",
+    JSON.stringify(expensesCategories)
+  );
 }
 
-// function userAnswerTest: recibe la respuesta ingresada por el usuario en un prompt y verifica que contenga un valor y que cumpla con la cantidad mínima de caracteres solicitados.
-function userAnswerTest(userAnswer, chs) {
-  testResult = false;
-  if (userAnswer !== undefined && userAnswer !== null && userAnswer !== "") {
-    userAnswer = userAnswer.trim();
-    if (userAnswer.length >= chs) {
-      testResult = true;
-    }
-  }
-  console.log("userAnswerTest: ", testResult);
-  return testResult;
-}
+// Genera una estructura div-title-about-list-add-exit para las secciones de personalización.
+function userEditContainer(sectionName) {
+  const divContainer = document.createElement("section");
+  divContainer.classList += "container shadow p-3";
+  divContainer.id = sectionName + "divContainer";
 
-// function userAnswerPrompts: administra la interacción con el usuario cuando se solicita el ingreso de un dato por prompt.
-// Gestiona los mensajes inicial y avisos de error/reintento. Verifica validez del dato y cantidad de intentos.
-function userAnswerPrompts(msg1, msg2, chs, iter) {
-  let userAnswer = prompt(msg1);
-  let it = 1;
-  if (userAnswer) {
-    if (userAnswerTest(userAnswer, chs)) {
-      userAnswer = userAnswer.trim();
-      console.log("it ",it,userAnswer);
-    } else {
-      while (userAnswer && !userAnswerTest(userAnswer, chs) && it < iter) {
-        userAnswer = prompt(msg2);
-        it++;
-        console.log("it ", it, userAnswer);
-      }
-      if (it < iter && userAnswer) {
-        userAnswer = userAnswer.trim();
-      } else {
-        userAnswer = null;
-      }
-    }
-  } else {
-    userAnswer = null
-  }
-  console.log("User answer: ", userAnswer);
-  return userAnswer;
+  const title = document.createElement("h2");
+  title.id = sectionName + "Title";
+
+  const about = document.createElement("p");
+  about.id = sectionName + "About";
+
+  const listDiv = document.createElement("div");
+  listDiv.classList += "p-3";
+  listDiv.id = sectionName + "List";
+
+  const addNewElement = document.createElement("div");
+  addNewElement.id = sectionName + "AddNew";
+
+  const exitBtn = document.createElement("button");
+  exitBtn.name = "editExit";
+  exitBtn.addEventListener("click", createUserSetMenu);
+  exitBtn.classList += "btn btn-dark mt-3 p-3 w-50 mx-auto";
+  exitBtn.textContent = "Finalizar";
+
+  divContainer.appendChild(title);
+  divContainer.appendChild(about);
+  divContainer.appendChild(listDiv);
+  divContainer.appendChild(addNewElement);
+  divContainer.appendChild(exitBtn);
+
+  mainSection.appendChild(divContainer);
 }
 
 //function createUser: gestiona la creación del nombre de usuario y contraseña.
 function createUser() {
-  let createUserSuccess = false;
-  const msg = `El primer paso es crear tu usuario y contraseña.
-Cancelar para salir
-`;
-  const userChoice = confirm(msg);
-  if (userChoice) {
-    const msg1 = `Por favor introduce un nombre de usuario:`
-    const msg2 = `El nombre debe poseer al menos 3 letras.
-Por favor introduce tu nombre de usuario:
-    `;
-    const iter = 3;
-    const chs = 3;
-    user = userAnswerPrompts(msg1, msg2, chs, iter);
-    if (user == null) {
-      exit("noSuccess");
-    } else {
-      user = user.charAt(0).toUpperCase() + user.slice(1).toLowerCase();
-      createUserSuccess = true;
-    }
-  } else {
-    exit("noSuccess");
-  }
-  console.log("user final: ", user);
-  console.log("createUserSuccess: ", createUserSuccess);
-  return createUserSuccess;
-}
+  let createUserOK = false;
+  const boton = document.getElementById("btnNewUser");
+  boton.addEventListener("click", (e) => {
+    e.preventDefault();
+    let createUserOK = true;
+    let errorMsg = "";
+    let name = document.getElementById("user-name").value;
+    let email = document.getElementById("user-email").value;
+    let password1 = document.getElementById("user-password-1").value;
+    let password2 = document.getElementById("user-password-2").value;
 
-// function createPassword: gestiona la creación de una contraseña y la validación de la reiteración de contraseña.
-function createPassword() {
-  let createPasswordSuccess = false;
-  const msg = `${user}, vamos a proteger tu cuenta con una contraseña.
-Debe contener al menos 6 caracteres.
-  
-Cancelar para salir.
-  `;
-  const userChoice = confirm(msg);
-  if (userChoice) {
-    const msg1 = `Por favor introduce una contraseña:`;
-    const msg2 = `La contraseña debe poseer al menos 6 caracteres.
-Por favor introduce una nueva contraseña:";
-    `;
-    const iter = 3;
-    const chs = 6;
-    let password = userAnswerPrompts(msg1, msg2, chs, iter);
-    if (password == null) {
-      exit("noSuccess");
-    } else {
-      /* Validación de contraseña*/
-      let password2 = prompt(`Por favor, escribe nuevamente la contraseña:`);
-      console.log(password, " == ", password2);
-      if (password == password2) {
-        createPasswordSuccess = true;
-      } else {
-        password2 = prompt(`Los valores no coinciden. Por favor escribe nuevamente la contraseña:`
-        );
-        if (password == password2) {
-          createPasswordSuccess = true;
-        } else {
-          exit("noSuccess");
-        }
-      }
+    if (name.length < 3) {
+      errorMsg += "Usuario no válido. ";
+      createUserOK = false;
     }
-  }
-  return createPasswordSuccess;
-}
 
-// function editArrays: gestiona la edición de los arrays con los datos personalizables por el usuario
-function editArrays(arr, msgInfo, topic) {
-  // Mensaje inicial
-  let msg = msgInfo;
-  msg += `
-Los siguientes elementos ya se encuentran en la app:
-  `;
-  arr.forEach((elem) => {
-    msg += ` - ${elem}\n`;
+    const emailTest = (email) => {
+      const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+      return regex.test(email);
+    };
+
+    if (!emailTest(email)) {
+      console.log("email");
+      errorMsg += "Correo no válido. ";
+      createUserOK = false;
+    }
+
+    if (password1.length < 6) {
+      console.log("contraseña corta");
+      errorMsg += "Contraseña no válida. ";
+      createUserOK = false;
+    }
+
+    if (password1 !== password2) {
+      console.log("contraseñas no coinciden");
+      errorMsg += "Las contraseñas no coinciden. ";
+      createUserOK = false;
+    }
+
+    if (createUserOK) {
+      let user = new User(name, password1, email);
+      const helloUser = document.getElementById("hello-user");
+      helloUser.innerText = "Hola " + user.name;
+      localStorage.setItem("user", JSON.stringify(user));
+      const divUserAccount = document.getElementById("user-account");
+      divUserAccount.remove();
+      createUserSetMenu();
+    } else {
+      const erText = document.getElementById("er-text");
+      erText.textContent = errorMsg;
+    }
   });
-  msg += `
-A continuación podrás eliminar y agregar elementos para que Bee se adapte a tu estilo de vida financiera
-  
-Cancelar para omitir este paso
-  `;
-  if (confirm(msg)) {
-    //Listar elementos predefinidos para conservar o eliminar
-    let elementsSelection = [];
-    arr.forEach((element) => {
-      msg = `Estás editando: ${topic} 
-Deseas conservar: ${element}?
+  return createUserOK;
+}
 
-Aceptar para conservar - Cancelar para eliminar
-    `;
-      let userChoice = confirm(msg);
-      if (userChoice) {
-        elementsSelection.push(element);
-      }
-    });
+// Menú Configuraciones
 
-    // Mostrar elementos conservados
-    if (elementsSelection.length > 0) {
-    msg = `Estás editando: ${topic}
-Estos son los elementos seleccionados:
-  `;
-    elementsSelection.forEach((elem) => {
-      msg += ` - ${elem}\n`;
-    });
-  } else {
-    msg = `Estás editando: ${topic}
-Tu lista de elementos está vacía. Es importante que agregues elementos para poder realizar la correcta carga de elementos.
-  `;
+function createUserSetMenu() {
+  console.log("funcion Createusersetmenu");
+  clearMainSection();
+  const menuSection = document.createElement("section");
+  menuSection.classList += "container shadow p-3 d-flex justify-content-around";
+  const menuText = ["Billeteras", "Egresos", "Ingresos"];
+  const menuId = ["wallets", "EC", "IC"];
+  const menuEvent = [editWallets, editEC, editIC];
+  menuText.forEach((element, index) => {
+    console.log(element, index);
+    const menuBtn = document.createElement("button");
+    menuBtn.classList += "btn btn-dark w-25";
+    menuBtn.textContent = element;
+    menuBtn.id = menuId[index] + "MenuBtn";
+    menuSection.appendChild(menuBtn);
+    menuBtn.addEventListener("click", menuEvent[index]);
+  });
+  mainSection.appendChild(menuSection);
+  return;
+}
 
-  }
-
-    msg += `
-A continuación podrás agregar elementos.
-    `
-    alert(msg);
-
-    //Agregar nuevos elementos
-    const msg1 = `Estás editando: ${topic}
-Por favor ingrese el nombre del nuevo elemento:
-
-Si no desea agregar otro elemento presione Cancelar `;
-    const msg2 = `Estás editando: ${topic}
-El nombre debe poseer al menos 3 letras.
-Por favor introduce nuevamente un nombre para el elemento:`;
-    const iter = 2;
-    const chs = 3;
-    let newElement = userAnswerPrompts(msg1, msg2, chs, iter);
-    while (newElement !== null) {
-      newElement = newElement.charAt(0).toUpperCase() + newElement.slice(1).toLowerCase();
-      elementsSelection.push(newElement)
-      newElement = userAnswerPrompts(msg1, msg2, chs, iter);
-    }
-    if (newElement == null) {
-      // Mostrar elementos conservados
-      msg = `${topic}
-Estos son los elementos que tendrás disponible:
-  `;
-      elementsSelection.forEach((elem) => {
-        msg += ` - ${elem}\n`;
-      });
-      msg += `\nRecuerda que siempre podrás volver a editar esta sección.`;
-      alert(msg);
-    }
-    return elementsSelection.sort();
-  } else {
-    return arr;
+function clearMainSection() {
+  if (mainSection.childNodes.length > 3) {
+    mainSection.removeChild(mainSection.lastChild);
   }
 }
 
-// function editWallets: lanza la función editArrays con los parámetros para Billeteras
+// Crea el listado de elementos con su correspondiente check
+function createList(arr, preId) {
+  const checkList = document.createElement("div");
+  checkList.id = preId + "CheckList";
+  checkList.classList += "row p-3";
+  arr.forEach((element, index) => {
+    const checkbox = document.createElement("input");
+    checkbox.id = preId + "-" + index;
+    checkbox.type = "checkbox";
+    checkbox.checked = element.active;
+    // checkbox.role = "switch";
+    checkbox.classList += "form-check-input col-2";
+
+    const labelName = document.createElement("label");
+    labelName.textContent = element.name;
+    labelName.classList += "form-check-label col-4";
+
+    const labelType = document.createElement("label");
+    labelType.textContent = element.type;
+    labelType.classList += "form-label col-4 ";
+
+    const listItem = document.createElement("div");
+    listItem.classList += "row";
+    listItem.appendChild(checkbox);
+    listItem.appendChild(labelName);
+    listItem.appendChild(labelType);
+    checkList.appendChild(listItem);
+  });
+
+  const editBtn = document.createElement("button");
+  editBtn.id = preId + "EditBtn";
+  editBtn.textContent = "Guardar modificaciones";
+  editBtn.classList += "btn btn-dark m-3 w-50 mx-auto";
+  checkList.appendChild(editBtn);
+
+  return checkList;
+}
+
+// GEnera el div que contienen las opciones para agregar un nuevo item.
+function addNewItem(arTypes, label, preId) {
+  const addItemDiv = document.createElement("div");
+  addItemDiv.classList += "pt-3";
+  const addItemLabel = document.createElement("label");
+  addItemLabel.textContent = label;
+  addItemLabel.classList += "form-label m-3";
+  const addItemInput = document.createElement("input");
+  addItemInput.id = "addItemInput";
+  addItemInput.type = "text";
+  addItemInput.classList += "form-input m-3";
+  const addItemTypeSelect = document.createElement("select");
+  addItemTypeSelect.id = "addTypeSelect";
+  addItemTypeSelect.classList += "form-input m-3";
+  arTypes.forEach((element) => {
+    const typeOption = document.createElement("option");
+    typeOption.text = element;
+    typeOption.value = element;
+    addItemTypeSelect.appendChild(typeOption);
+  });
+  const addItemBtn = document.createElement("button");
+  addItemBtn.id = preId + "addBtn";
+  addItemBtn.textContent = "Agregar";
+  addItemBtn.classList += "btn btn-dark m-3";
+
+  addItemDiv.appendChild(addItemLabel);
+  addItemDiv.appendChild(addItemInput);
+  addItemDiv.appendChild(addItemTypeSelect);
+  addItemDiv.appendChild(addItemBtn);
+
+  return addItemDiv;
+}
+
+// Guarda las modificaciones de la propiedad active en cada billetera.
+function updateWallets() {
+  const upWallets = JSON.parse(localStorage.getItem("wallets"));
+  console.table(upWallets);
+  for (let index = 0; index < upWallets.length; index++) {
+    const userChoice = document.getElementById("wallet-" + index);
+    upWallets[index].active = userChoice.checked;
+  }
+  console.table(upWallets);
+  localStorage.setItem("wallets", JSON.stringify(upWallets));
+}
+
+// Agrega al array wallets un nuevo objeto. Actualiza el listado.
+function addNewWallet() {
+  const wallets = JSON.parse(localStorage.getItem("wallets"));
+  const walletName = document.getElementById("addItemInput").value;
+  const walletType = document.getElementById("addTypeSelect").value;
+  const newWallet = new Wallet(walletName, walletType, true);
+  wallets.push(newWallet);
+  const listDiv = document.getElementById("walletsList");
+  listDiv.removeChild(listDiv.lastChild);
+  const walletsList = createList(wallets, "wallets");
+  document.getElementById("walletsList").appendChild(walletsList);
+  localStorage.setItem("wallets", JSON.stringify(wallets));
+}
+
+// function editWallets: administra la creación y modificacion de billeteras
 function editWallets() {
-  console.log("Edición de Billeteras")
-  let msgInfo = `${user}, vamos a configurar tus billeteras.
-Las billeteras son los medios de pago y cobro que utilizas habitualmente.
-  `;
-  wallets = editArrays(wallets, msgInfo, "BILLETERAS");
-  console.table(wallets)
+  const wallets = JSON.parse(localStorage.getItem("wallets"));
+  console.table(wallets);
+  console.log("Edición de Billeteras");
+  clearMainSection();
+  userEditContainer("wallets");
+  document.getElementById("walletsTitle").textContent = "Billeteras";
+  document.getElementById("walletsAbout").textContent =
+    "Selecciona las billeteras que dispones.";
+  const walletsList = createList(wallets, "wallet");
+  const walletsAddNew = addNewItem(walletType, "Nueva billetera:", "wallet");
+  document.getElementById("walletsList").appendChild(walletsList);
+  document.getElementById("walletsAddNew").appendChild(walletsAddNew);
+  const modWallets = document.getElementById("walletEditBtn");
+  modWallets.addEventListener("click", updateWallets);
+  const addWallets = document.getElementById("walletaddBtn");
+  addWallets.addEventListener("click", addNewWallet);
 }
 
-// function editIncomeCategories: lanza la función editArrays con los parámetros para Categorías de Ingresos
-function editIncomeCategories() {
-  console.log("Edición de categorías de ingresos")
-  let msgInfo = `${user}, vamos a asignarle categorías a tus ingresos.
-Define todas las categorías que necesites para reflejar el origen de tus ingresos.
-  `;
-  incomeCategories = editArrays(
-    incomeCategories,
-    msgInfo,
-    "CATEGORÍAS DE INGRESO"
+// Agrega al array expensescategories un nuevo objeto. Actualiza el listado.
+function addNewExpenseCategory() {
+  const expensesCategories = JSON.parse(
+    localStorage.getItem("expensesCategories")
   );
-  console.table(incomeCategories)
-}
-
-// function editExpensesCategories: lanza la función editArrays con los parámetros para Categorías de Egresos
-function editExpensesCategories() {
-  console.log("Edición de categorías de egresos")
-  let msgInfo = `${user} ¿Sabes en qué gastas tu dinero?
-Identificar las categorías que generan mayor egreso es crucial para tu economía. Crea todas las categorías necesarias para futuros análisis.
-  `;
-  expensesCategories = editArrays(
-    expensesCategories,
-    msgInfo,
-    "CATEGORÍAS DE EGRESOS"
+  const ecName = document.getElementById("addItemInput").value;
+  const ecType = document.getElementById("addTypeSelect").value;
+  const newEC = new movCategory(ecName, ecType, true);
+  expensesCategories.push(newEC);
+  const listDiv = document.getElementById("ecList");
+  listDiv.removeChild(listDiv.lastChild);
+  const ecList = createList(expensesCategories, "ec");
+  document.getElementById("ecList").appendChild(ecList);
+  localStorage.setItem(
+    "expensesCategories",
+    JSON.stringify(expensesCategories)
   );
-  console.table(expensesCategories)
 }
 
+// Guarda las modificaciones de la propiedad active en cada categoria.
+function updateExpensesCategories() {
+  const expensesCategories = JSON.parse(
+    localStorage.getItem("expensesCategories")
+  );
 
+  console.table(expensesCategories);
+  for (let index = 0; index < expensesCategories.length; index++) {
+    const userChoice = document.getElementById("ec-" + index);
+    expensesCategories[index].active = userChoice.checked;
+    console.log(userChoice, userChoice.checked);
+  }
+  console.table(expensesCategories);
+  localStorage.setItem(
+    "expensesCategories",
+    JSON.stringify(expensesCategories)
+  );
+}
+
+// function editEC: administra la creación y modificacion de categorias de egresos
+function editEC() {
+  const expensesCategories = JSON.parse(
+    localStorage.getItem("expensesCategories")
+  );
+
+  console.log("Edición de Categorías de egreso");
+  clearMainSection();
+  userEditContainer("ec");
+  document.getElementById("ecTitle").textContent = "Egresos";
+  document.getElementById("ecAbout").textContent =
+    "Selecciona las categorías de egreso que te representan.";
+  const ecList = createList(expensesCategories, "ec");
+  const ecAddNew = addNewItem(categoryType, "Nueva categoría:", "ec");
+  document.getElementById("ecList").appendChild(ecList);
+  document.getElementById("ecAddNew").appendChild(ecAddNew);
+  const modEC = document.getElementById("ecEditBtn");
+  modEC.addEventListener("click", updateExpensesCategories);
+  const addEC = document.getElementById("ecaddBtn");
+  addEC.addEventListener("click", addNewExpenseCategory);
+}
+
+// Agrega al array expensescategories un nuevo objeto. Actualiza el listado.
+function addNewIncomeCategory() {
+  const incomeCategories = JSON.parse(localStorage.getItem("incomeCategories"));
+  const icName = document.getElementById("addItemInput").value;
+  const icType = document.getElementById("addTypeSelect").value;
+  const newIC = new movCategory(icName, icType, true);
+  incomeCategories.push(newIC);
+  const listDiv = document.getElementById("icList");
+  listDiv.removeChild(listDiv.lastChild);
+  const icList = createList(incomeCategories, "ic");
+  document.getElementById("icList").appendChild(icList);
+  localStorage.setItem("incomeCategories", JSON.stringify(incomeCategories));
+}
+
+// Guarda las modificaciones de la propiedad active en cada categoria.
+function updateIncomeCategories() {
+  const incomeCategories = JSON.parse(localStorage.getItem("incomeCategories"));
+
+  console.table(incomeCategories);
+  for (let index = 0; index < incomeCategories.length; index++) {
+    const userChoice = document.getElementById("ic-" + index);
+    incomeCategories[index].active = userChoice.checked;
+    console.log(userChoice, userChoice.checked);
+  }
+  console.table(incomeCategories);
+  localStorage.setItem("incomeCategories", JSON.stringify(incomeCategories));
+}
+
+// function editEC: administra la creación y modificacion de categorias de egresos
+function editIC() {
+  const incomeCategories = JSON.parse(localStorage.getItem("incomeCategories"));
+  console.log("Edición de Categorías de ingreso");
+  clearMainSection();
+  userEditContainer("ic");
+  document.getElementById("icTitle").textContent = "Ingresos";
+  document.getElementById("icAbout").textContent =
+    "Selecciona las categorías de Ingresos que te representan.";
+  const icList = createList(incomeCategories, "ic");
+  const icAddNew = addNewItem(categoryType, "Nueva categoría:", "ic");
+  document.getElementById("icList").appendChild(icList);
+  document.getElementById("icAddNew").appendChild(icAddNew);
+  const modIC = document.getElementById("icEditBtn");
+  modIC.addEventListener("click", updateIncomeCategories);
+  const addIC = document.getElementById("icaddBtn");
+  addIC.addEventListener("click", addNewIncomeCategory);
+}
 
 // Función principal que controla la secuencia de pasos del tutorial.
 function main() {
-  alert(welcome);
-  if (createUser()) {
-    console.log("Usuario creado con éxito. Se procede a crear contraseña")
-    if (createPassword()) {
-      console.log("Contraseña creada con éxito. Creación de credencial de cuenta exitosa.")
-      const msg = `¡Tu usuario ha sido creado con éxito!
-
-Te invitamos a ajustar los parámetros de la aplicación para que se adapten a tu vida financiera.
-¿Desea continuar con la personalización de la aplicación?
-      `;
-      let userChoice = confirm(msg);
-      if (userChoice) {
-        console.log("Usuario decide avanzar con la personalización")
-        editWallets();
-        editIncomeCategories();
-        editExpensesCategories();
-        exit("Success");
-      } 
-      else exit("Success");
-    }
+  initData();
+  const lsUser = JSON.parse(localStorage.getItem("user"));
+  console.log(lsUser);
+  if (lsUser === null) {
+    createUser();
+  } else {
+    const helloUser = document.getElementById("hello-user");
+    helloUser.innerText = "Hola " + lsUser.name;
+    const divUserAccount = document.getElementById("user-account");
+    divUserAccount.remove();
+    createUserSetMenu();
   }
 }
 
