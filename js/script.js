@@ -75,106 +75,35 @@ function initData() {
 
 function createUserWindow() {
   const divContainer = document.createElement("section");
-  divContainer.classList += "container shadow p-3 w-50";
+  divContainer.classList += "container shadow p-3 w-50 mt-3";
   divContainer.id = "user-account";
-
-  const title = document.createElement("h2");
-  title.textContent = "Vamos a crear tu cuenta";
-
-  const about = document.createElement("p");
-  about.textContent = "Por favor ingresa los siguientes datos:";
-
-  const erAlert = document.createElement("p");
-  erAlert.classList += "text-danger"
-  erAlert.id = "er-text"
-  erAlert.textContent = ""
-
-  const formContainer = document.createElement("form");
-
-  // Nombre
-  const nameDiv = document.createElement("div");
-  nameDiv.classList += "mb-3";
-
-  const helpDiv = document.createElement("div");
-  helpDiv.classList += "form-text";
-  helpDiv.id = "user-help"
-  helpDiv.textContent = "Debe contener al menos 3 letras."
-
-  const nameLabel = document.createElement("label");
-  nameLabel.classList += "form-label";
-  nameLabel.for = "user-name"
-  nameLabel.textContent = "Usuario"
-
-  const nameInput = document.createElement("input");
-  nameInput.classList += "form-control";
-  nameInput.id = "user-name";
-  nameInput.type = "text";
-  nameInput.setAttribute("aria-describedby", "user-help")
-
-  nameDiv.append(nameLabel, nameInput, helpDiv)
-
-
-  // Correo electrónico
-  const emailDiv = document.createElement("div");
-  emailDiv.classList += "mb-3";
-
-  const emailLabel = document.createElement("label");
-  emailLabel.classList += "form-label";
-  emailLabel.for = "user-mail"
-  emailLabel.textContent = "Correo electrónico"
-
-  const emailInput = document.createElement("input");
-  emailInput.classList += "form-control";
-  emailInput.id = "user-email";
-  emailInput.type = "email";
-  emailDiv.append(emailLabel, emailInput);
-
-  // Password 1
-
-  const password1Div = document.createElement("div");
-  password1Div.classList += "mb-3";
-
-  const helpPDiv = document.createElement("div");
-  helpPDiv.classList += "form-text";
-  helpPDiv.id = "userp-help"
-  helpPDiv.textContent = "Debe contener al menos 6 letras."
-
-  const password1Label = document.createElement("label");
-  password1Label.classList += "form-label";
-  password1Label.for = "user-password-1"
-  password1Label.textContent = "Contraseña"
-
-
-  const password1Input = document.createElement("input");
-  password1Input.classList += "form-control";
-  password1Input.id = "user-password-1"
-  password1Input.type = "password"
-  password1Input.setAttribute("aria-describedby", "userp-help")
-
-  password1Div.append(password1Label, password1Input, helpPDiv)
-
-  // password 2
-  const password2Div = document.createElement("div");
-  password2Div.classList += "mb-3";
-
-  const password2Label = document.createElement("label");
-  password2Label.classList += "form-label";
-  password2Label.textContent += "Reingrese su contraseña";
-
-  const password2Input = document.createElement("input");
-  password2Input.classList += "form-control";
-  password2Input.id = "user-password-2"
-  password2Input.type = "password"
-
-  password2Div.append(password2Label, password2Input)
-
-
-  const btnNewUser = document.createElement("button");
-  btnNewUser.classList += "btn btn-dark";
-  btnNewUser.id = "btnNewUser";
-  btnNewUser.textContent = "Crear usuario"
-
-  divContainer.append(title, about, erAlert, nameDiv, emailDiv, password1Div, password2Div, btnNewUser);
+  divContainer.innerHTML = `
+      <h2>Vamos a crear tu cuenta</h2>
+      <p>Por favor ingresa los siguientes datos:</p>
+      <span class="text-danger" id="er-text"></span>
+      <form>
+        <div class="mb-3">
+          <label class="form-label" for="user-name">Usuario:</label>
+          <input type="text" name="user-name" id="user-name" class="form-control" aria-describedby="user-help">
+          <div class="form-text" id="user-help">Debe contener al menos 3 letras.</div>
+        </div>
+        <div class="mb-3">
+          <label for="user-email" class="form-label">Correo Electrónico:</label>
+          <input type="email" name="user-email" id="user-email" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="user-password-1" class="form-label">Contraseña</label>
+          <input type="password" name="user-password-1" id="user-password-1" class="form-control"
+            aria-describedby="userp-help">
+          <div class="form-text" id="userp-help">Debe contener al menos 6 letras.</div>
+        </div>
+        <div class="mb-3">
+          <label for="user-password-2" class="form-label">Reingrese la contraseña:</label>
+          <input type="password" name="user-password-2" id="user-password-2" class="form-control">
+        </div>
+        <button class="btn btn-dark" id="btnNewUser">Crear usuario</button>
+      </form>
+`
 
   mainSection.appendChild(divContainer);
 }
@@ -205,19 +134,16 @@ function createUser() {
     };
 
     if (!emailTest(email)) {
-      console.log("email");
       errorMsg += "Correo no válido. ";
       createUserOK = false;
     }
 
     if (password1.length < 6) {
-      console.log("contraseña corta");
       errorMsg += "Contraseña no válida. ";
       createUserOK = false;
     }
 
     if (password1 !== password2) {
-      console.log("contraseñas no coinciden");
       errorMsg += "Las contraseñas no coinciden. ";
       createUserOK = false;
     }
@@ -243,36 +169,20 @@ function createUser() {
 function userEditContainer(sectionName) {
   const divContainer = document.createElement("section");
   divContainer.classList += "w-75 shadow p-3 d-flex flex-column text-center container ";
-  divContainer.id = sectionName + "divContainer";
-
-  const title = document.createElement("h2");
-  title.id = sectionName + "Title";
-
-  const about = document.createElement("p");
-  about.id = sectionName + "About";
-
-  const listDiv = document.createElement("div");
-  listDiv.classList += "p-3 align-self-center w-75 mx-auto";
-  listDiv.id = sectionName + "List";
-
-  const addNewElement = document.createElement("div");
-  addNewElement.id = sectionName + "AddNew";
-
-  const exitBtn = document.createElement("button");
-  exitBtn.name = "editExit";
-  exitBtn.addEventListener("click", createUserSetMenu);
-  exitBtn.classList += "btn btn-dark mt-3 mx-auto";
-  exitBtn.textContent = "Finalizar";
-
-  divContainer.append(title, about, listDiv, addNewElement, exitBtn);
-
+  divContainer.id = sectionName;
+  divContainer.innerHTML = `
+      <h2 id="title"></h2>  
+      <p id="about"></p>
+      <div id="list" class="p-3 align-self-center w-75 mx-auto" ></div>
+      <div id="addNew"></div>
+      <button id="editExit" class="btn btn-dark">Finalizar</button>`
   mainSection.appendChild(divContainer);
+  document.getElementById("editExit").addEventListener("click", createUserSetMenu)
 }
 
 // Menú: Crea los botones de acceso a las opciones de personalización
 
 function createUserSetMenu() {
-  console.log("funcion Createusersetmenu");
   clearMainSection();
   const menuSection = document.createElement("section");
   menuSection.classList += "container shadow p-3 d-flex justify-content-around";
@@ -280,7 +190,6 @@ function createUserSetMenu() {
   const menuId = ["wallets", "EC", "IC"];
   const menuEvent = [editWallets, editEC, editIC];
   menuText.forEach((element, index) => {
-    console.log(element, index);
     const menuBtn = document.createElement("button");
     menuBtn.classList += "btn btn-dark w-25";
     menuBtn.textContent = element;
@@ -304,29 +213,31 @@ function createList(arr, preId) {
   checkList.id = preId + "CheckList";
   checkList.classList += "p-3 ";
   arr.forEach((element, index) => {
-    const checkbox = document.createElement("input");
-    checkbox.id = preId + "-" + index;
-    checkbox.type = "checkbox";
-    checkbox.checked = element.active;
-    // checkbox.role = "switch";
-    checkbox.classList += "form-check-input col-2";
+    let check = ""
+    if (element.active) {
+      check = `
+      <input type="checkbox" name="${preId}-${index}" id="${preId}-${index}" class="form-check-input col-2" checked></input>
+      `
+    } else {
+      check = `
+      <input type="checkbox" name="${preId}-${index}" id="${preId}-${index}" class="form-check-input col-2"></input>
+      `
+    }
 
-    const labelName = document.createElement("label");
-    labelName.textContent = element.name;
-    labelName.classList += "form-check-label px-3 col-5";
-
-    const labelType = document.createElement("label");
-    labelType.textContent = element.type;
-    labelType.classList += "form-label col-5";
-
-    const listItem = document.createElement("div");
-    listItem.classList += "row border-bottom";
-    listItem.append(checkbox, labelName, labelType);
-    checkList.appendChild(listItem);
+    const listItem =
+      `
+      <div class="row border-bottom p-1">
+        ${check}
+        <span class="px-3 col-5">${element.name}</span>
+        <span class="px-3 col-5">${element.type}</span>
+      </div>
+      `
+    checkList.innerHTML += listItem;
+    // document.getElementById(`${preId}-${index}`).checked = element.active;
   });
 
   const editBtn = document.createElement("button");
-  editBtn.id = preId + "EditBtn";
+  editBtn.id = "editBtn";
   editBtn.textContent = "Guardar modificaciones";
   editBtn.classList += "btn btn-dark m-3";
   checkList.appendChild(editBtn);
@@ -335,47 +246,35 @@ function createList(arr, preId) {
 }
 
 // GEnera el div que contienen las opciones para agregar un nuevo item.
-function addNewItem(arTypes, label, preId) {
+function addNewItem(arTypes, label) {
   const addItemDiv = document.createElement("div");
   addItemDiv.classList += "pt-3";
-  const addItemLabel = document.createElement("label");
-  addItemLabel.textContent = label;
-  addItemLabel.classList += "form-label m-3";
-  const addItemInput = document.createElement("input");
-  addItemInput.id = "addItemInput";
-  addItemInput.type = "text";
-  addItemInput.classList += "form-input m-3";
-  const addItemTypeSelect = document.createElement("select");
-  addItemTypeSelect.id = "addTypeSelect";
-  addItemTypeSelect.classList += "form-input m-3";
+  let selectOptions = ""
   arTypes.forEach((element) => {
-    const typeOption = document.createElement("option");
-    typeOption.text = element;
-    typeOption.value = element;
-    addItemTypeSelect.appendChild(typeOption);
+    selectOptions += `
+    <option value="${element}">${element}</option>
+    `
   });
-  const addItemBtn = document.createElement("button");
-  addItemBtn.id = preId + "addBtn";
-  addItemBtn.textContent = "Agregar";
-  addItemBtn.classList += "btn btn-dark m-3";
 
-  addItemDiv.appendChild(addItemLabel);
-  addItemDiv.appendChild(addItemInput);
-  addItemDiv.appendChild(addItemTypeSelect);
-  addItemDiv.appendChild(addItemBtn);
-
+  addItemDiv.innerHTML = `
+    <label for="addItemInput" class="form-label">${label}</label>
+    <input type="text" id="addItemInput" class="form-input">
+    <select name="addTypeSelect" id="addTypeSelect" class="form-input">
+      ${selectOptions}
+    </select>
+    <button id="addBtn" class="btn btn-dark m-3">Agregar</button>
+    `
   return addItemDiv;
 }
 
 // Guarda las modificaciones de la propiedad active en cada billetera.
 function updateWallets() {
   const upWallets = JSON.parse(localStorage.getItem("wallets"));
-  console.table(upWallets);
   for (let index = 0; index < upWallets.length; index++) {
     const userChoice = document.getElementById("wallet-" + index);
     upWallets[index].active = userChoice.checked;
   }
-  console.table(upWallets);
+
   localStorage.setItem("wallets", JSON.stringify(upWallets));
 }
 
@@ -386,30 +285,30 @@ function addNewWallet() {
   const walletType = document.getElementById("addTypeSelect").value;
   const newWallet = new Wallet(walletName, walletType, true);
   wallets.push(newWallet);
-  const listDiv = document.getElementById("walletsList");
+  const listDiv = document.getElementById("list");
   listDiv.removeChild(listDiv.lastChild);
-  const walletsList = createList(wallets, "wallets");
-  document.getElementById("walletsList").appendChild(walletsList);
+  const walletsList = createList(wallets, "wallet");
+  document.getElementById("list").appendChild(walletsList);
+  const modWallets = document.getElementById("editBtn");
+  modWallets.addEventListener("click", updateWallets);
   localStorage.setItem("wallets", JSON.stringify(wallets));
 }
 
 // function editWallets: administra la creación y modificacion de billeteras
 function editWallets() {
   const wallets = JSON.parse(localStorage.getItem("wallets"));
-  console.table(wallets);
-  console.log("Edición de Billeteras");
   clearMainSection();
   userEditContainer("wallets");
-  document.getElementById("walletsTitle").textContent = "Billeteras";
-  document.getElementById("walletsAbout").textContent =
+  document.getElementById("title").textContent = "Billeteras";
+  document.getElementById("about").textContent =
     "Selecciona las billeteras que dispones.";
   const walletsList = createList(wallets, "wallet");
   const walletsAddNew = addNewItem(walletType, "Nueva billetera:", "wallet");
-  document.getElementById("walletsList").appendChild(walletsList);
-  document.getElementById("walletsAddNew").appendChild(walletsAddNew);
-  const modWallets = document.getElementById("walletEditBtn");
+  document.getElementById("list").appendChild(walletsList);
+  document.getElementById("addNew").appendChild(walletsAddNew);
+  const modWallets = document.getElementById("editBtn");
   modWallets.addEventListener("click", updateWallets);
-  const addWallets = document.getElementById("walletaddBtn");
+  const addWallets = document.getElementById("addBtn");
   addWallets.addEventListener("click", addNewWallet);
 }
 
@@ -422,10 +321,12 @@ function addNewExpenseCategory() {
   const ecType = document.getElementById("addTypeSelect").value;
   const newEC = new movCategory(ecName, ecType, true);
   expensesCategories.push(newEC);
-  const listDiv = document.getElementById("ecList");
+  const listDiv = document.getElementById("list");
   listDiv.removeChild(listDiv.lastChild);
   const ecList = createList(expensesCategories, "ec");
-  document.getElementById("ecList").appendChild(ecList);
+  document.getElementById("list").appendChild(ecList);
+  const modWallets = document.getElementById("editBtn");
+  modWallets.addEventListener("click", updateExpensesCategories);
   localStorage.setItem(
     "expensesCategories",
     JSON.stringify(expensesCategories)
@@ -438,13 +339,10 @@ function updateExpensesCategories() {
     localStorage.getItem("expensesCategories")
   );
 
-  console.table(expensesCategories);
   for (let index = 0; index < expensesCategories.length; index++) {
     const userChoice = document.getElementById("ec-" + index);
     expensesCategories[index].active = userChoice.checked;
-    console.log(userChoice, userChoice.checked);
   }
-  console.table(expensesCategories);
   localStorage.setItem(
     "expensesCategories",
     JSON.stringify(expensesCategories)
@@ -456,20 +354,18 @@ function editEC() {
   const expensesCategories = JSON.parse(
     localStorage.getItem("expensesCategories")
   );
-
-  console.log("Edición de Categorías de egreso");
   clearMainSection();
   userEditContainer("ec");
-  document.getElementById("ecTitle").textContent = "Egresos";
-  document.getElementById("ecAbout").textContent =
+  document.getElementById("title").textContent = "Egresos";
+  document.getElementById("about").textContent =
     "Selecciona las categorías de egreso que te representan.";
   const ecList = createList(expensesCategories, "ec");
   const ecAddNew = addNewItem(categoryType, "Nueva categoría:", "ec");
-  document.getElementById("ecList").appendChild(ecList);
-  document.getElementById("ecAddNew").appendChild(ecAddNew);
-  const modEC = document.getElementById("ecEditBtn");
+  document.getElementById("list").appendChild(ecList);
+  document.getElementById("addNew").appendChild(ecAddNew);
+  const modEC = document.getElementById("editBtn");
   modEC.addEventListener("click", updateExpensesCategories);
-  const addEC = document.getElementById("ecaddBtn");
+  const addEC = document.getElementById("addBtn");
   addEC.addEventListener("click", addNewExpenseCategory);
 }
 
@@ -480,50 +376,47 @@ function addNewIncomeCategory() {
   const icType = document.getElementById("addTypeSelect").value;
   const newIC = new movCategory(icName, icType, true);
   incomeCategories.push(newIC);
-  const listDiv = document.getElementById("icList");
+  const listDiv = document.getElementById("list");
   listDiv.removeChild(listDiv.lastChild);
   const icList = createList(incomeCategories, "ic");
-  document.getElementById("icList").appendChild(icList);
+  document.getElementById("list").appendChild(icList);
+  const modWallets = document.getElementById("editBtn");
+  modWallets.addEventListener("click", updateIncomeCategories);
   localStorage.setItem("incomeCategories", JSON.stringify(incomeCategories));
 }
 
 // Guarda las modificaciones de la propiedad active en cada categoria.
 function updateIncomeCategories() {
   const incomeCategories = JSON.parse(localStorage.getItem("incomeCategories"));
-
-  console.table(incomeCategories);
   for (let index = 0; index < incomeCategories.length; index++) {
     const userChoice = document.getElementById("ic-" + index);
     incomeCategories[index].active = userChoice.checked;
-    console.log(userChoice, userChoice.checked);
   }
-  console.table(incomeCategories);
   localStorage.setItem("incomeCategories", JSON.stringify(incomeCategories));
 }
 
 // function editEC: administra la creación y modificacion de categorias de egresos
 function editIC() {
   const incomeCategories = JSON.parse(localStorage.getItem("incomeCategories"));
-  console.log("Edición de Categorías de ingreso");
   clearMainSection();
   userEditContainer("ic");
-  document.getElementById("icTitle").textContent = "Ingresos";
-  document.getElementById("icAbout").textContent =
+  document.getElementById("title").textContent = "Ingresos";
+  document.getElementById("about").textContent =
     "Selecciona las categorías de Ingresos que te representan.";
   const icList = createList(incomeCategories, "ic");
   const icAddNew = addNewItem(categoryType, "Nueva categoría:", "ic");
-  document.getElementById("icList").appendChild(icList);
-  document.getElementById("icAddNew").appendChild(icAddNew);
-  const modIC = document.getElementById("icEditBtn");
+  document.getElementById("list").appendChild(icList);
+  document.getElementById("addNew").appendChild(icAddNew);
+  const modIC = document.getElementById("editBtn");
   modIC.addEventListener("click", updateIncomeCategories);
-  const addIC = document.getElementById("icaddBtn");
+  const addIC = document.getElementById("addBtn");
   addIC.addEventListener("click", addNewIncomeCategory);
 }
 
 // Función principal que controla la secuencia de pasos del tutorial.
 function main() {
   const lsUser = JSON.parse(localStorage.getItem("user"));
-  console.log(lsUser);
+
   if (lsUser === null) {
     initData();
     createUser();
