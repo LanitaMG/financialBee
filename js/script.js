@@ -131,7 +131,7 @@ function userEditContainer(sectionName) {
   const exitBtn = document.createElement("button");
   exitBtn.name = "editExit";
   exitBtn.addEventListener("click", createUserSetMenu);
-  exitBtn.classList += "btn btn-dark mt-3 p-3 w-50 mx-auto";
+  exitBtn.classList += "btn btn-dark mt-3 p-3";
   exitBtn.textContent = "Finalizar";
 
   divContainer.appendChild(title);
