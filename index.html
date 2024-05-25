@@ -1,93 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Financial Bee</title>
-    <script src="./js/script.js" defer></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-      crossorigin="anonymous"
-    ></script>
-  </head>
 
-  <body>
-    <nav class="navbar bg-light">
-      <div class="container">
-        <a class="navbar-brand" href="#">
-          <img
-            src="https://pngimg.com/uploads/bee/bee_PNG74743.png"
-            alt="Logo Bee"
-            width="30"
-            height="24"
-            class="d-inline-block align-text-top"
-          />
-          Financial Bee
-        </a>
-        <span id="hello-user" class="navbar-text">¡Bienvenido!</span>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Financial Bee</title>
+  <script type="module" src="./app/main.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+  <nav class="navbar bg-warning bg-opacity-75">
+    <div class="container w-75  ">
+      <a class="navbar-brand" href="#">
+        <img src="https://pngimg.com/uploads/bee/bee_PNG74743.png" alt="Logo Bee" width="30" height="24"
+          class="d-inline-block align-text-top" />
+        Financial Bee
+      </a>
+      <div>
+        <span id="hello-user" class="navbar-text text-dark">
+          ¡Bienvenido!
+        </span>
+        <i class="bi bi-person-fill-gear ps-3"></i>
       </div>
-    </nav>
-    <main id="main" class="container">
-      <section class="text-bg-dark p-2 text-center">
-        <h1>Financial Bee</h1>
-        <span>¡Tus finanzas en orden!</span>
-        <p class="pt-3">
-          Bienvenido a la aplicación que te permitirá organizar de forma rápida
-          y práctica todos tus movimientos financieros.
-        </p>
-      </section>
+    </div>
+    <section class="text-center w-100">
+      <h1>Financial Bee</h1>
+      <span class="fs-5">¡Tus finanzas en orden!</span>
+      <p class="pt-2">
+        Bienvenido a la aplicación que te permitirá organizar de forma rápida
+        y práctica todos tus movimientos financieros.
+      </p>
+    </section>
+  </nav>
 
-      <section id="user-account" class="p-3 shadow">
-        <h2>Vamos a crear tu cuenta</h2>
-        <p>Por favor ingresa un nombre de usuario y una contraseña:</p>
-        <form id="user-form" method="get">
-          <p id="er-text" class="text-danger"></p>
-          <div class="mb-3">
-            <label for="user-name" class="form-label">Nombre de usuario:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="user-name"
-              aria-describedby="userHelp"
-            />
-            <div id="userHelp" class="form-text">
-              Debe contener al menos 3 letras.
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="user-email" class="form-label"
-              >Correo electrónico:</label
-            >
-            <input type="text" class="form-control" id="user-email" />
-          </div>
-          <div class="mb-3">
-            <label for="user-password-1" class="form-label">Contraseña:</label>
-            <input
-              type="password"
-              class="form-control"
-              id="user-password-1"
-              aria-describedby="passwordHelp"
-            />
-            <div id="passwordHelp" class="form-text">
-              Debe contener al menos 6 caracteres.
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="user-password-2" class="form-label"
-              >Reingrese su contraseña:</label
-            >
-            <input type="password" class="form-control" id="user-password-2" />
-          </div>
-          <button id="btnNewUser" class="btn btn-dark">Crear</button>
-        </form>
-      </section>
-    </main>
-  </body>
+  <main id="main">
+  </main>
+</body>
+
 </html>
