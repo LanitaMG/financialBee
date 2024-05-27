@@ -1,15 +1,14 @@
 // Importar navegación de meses
-import { MesAnio, navMesAnio, indiceMesActual } from "./variables.js";
+import { mainSection, navMesAnio, indiceMesActual } from "./variables.js";
 import { editarMedioPago } from "./editarMediosDePago.js";
-const mainSection = document.querySelector("#main");
+import { editarCategorias } from "./editarCategorias.js";
 
 // Home
 export function showHome() {
-  console.table(navMesAnio)
+  mainSection.removeChild(mainSection.lastChild);
   const mesActual = navMesAnio[indiceMesActual()].mesAnio;
   const mesAnterior = navMesAnio[indiceMesActual() - 1].mes;
   const mesSiguiente = navMesAnio[indiceMesActual() + 1].mes;
-
 
   const home = document.createElement("div");
   home.id = "home";
@@ -96,46 +95,58 @@ export function showHome() {
               <i class="bi bi-wallet2"></i>
                 Editar Medios de Pago
             </button>
-            <button id="edCategories" class="col btn btn-white border rounded m-3 p-3">
+            <button id="edCategorias" class="col btn btn-white border rounded m-3 p-3">
               <i class="bi bi-tags"></i>
                 Editar Categorías
             </button>
           </div>
       </section>
     </div>
-    </div>`
+    </div>`;
 
   mainSection.appendChild(home);
-  document.getElementById("navMes").addEventListener("click", cambiarMes)
-  document.getElementById("edMedioPago").addEventListener("click", editarMedioPago)
-
-
+  document.getElementById("navMes").addEventListener("click", cambiarMes);
+  document
+    .getElementById("edMedioPago")
+    .addEventListener("click", editarMedioPago);
+  document
+    .getElementById("edCategorias")
+    .addEventListener("click", editarCategorias);
 }
 
-
 export function cambiarMes(event) {
-  const idMesActual = navMesAnio.findIndex(navMesAnio => navMesAnio.mesAnio === document.getElementById("mesActual").innerText)
+  const idMesActual = navMesAnio.findIndex(
+    (navMesAnio) =>
+      navMesAnio.mesAnio === document.getElementById("mesActual").innerText
+  );
   if (event.target.id == "irMesAnterior") {
     switch (idMesActual) {
       case 1:
-        document.getElementById("mesActual").innerText = navMesAnio[idMesActual - 1].mesAnio;
-        document.getElementById("mesSiguiente").innerText = navMesAnio[idMesActual].mes;
+        document.getElementById("mesActual").innerText =
+          navMesAnio[idMesActual - 1].mesAnio;
+        document.getElementById("mesSiguiente").innerText =
+          navMesAnio[idMesActual].mes;
         document.getElementById("mesAnterior").innerText = "";
         break;
       case 0:
         break;
       default:
-        document.getElementById("mesActual").innerText = navMesAnio[idMesActual - 1].mesAnio;
-        document.getElementById("mesSiguiente").innerText = navMesAnio[idMesActual].mes;
-        document.getElementById("mesAnterior").innerText = navMesAnio[idMesActual - 2].mes;
+        document.getElementById("mesActual").innerText =
+          navMesAnio[idMesActual - 1].mesAnio;
+        document.getElementById("mesSiguiente").innerText =
+          navMesAnio[idMesActual].mes;
+        document.getElementById("mesAnterior").innerText =
+          navMesAnio[idMesActual - 2].mes;
         break;
     }
   }
   if (event.target.id == "irMesSiguiente") {
     switch (idMesActual) {
       case 34:
-        document.getElementById("mesActual").innerText = navMesAnio[idMesActual + 1].mesAnio;
-        document.getElementById("mesAnterior").innerText = navMesAnio[idMesActual].mes;
+        document.getElementById("mesActual").innerText =
+          navMesAnio[idMesActual + 1].mesAnio;
+        document.getElementById("mesAnterior").innerText =
+          navMesAnio[idMesActual].mes;
         document.getElementById("mesSiguiente").innerText = "";
         break;
 
@@ -143,19 +154,21 @@ export function cambiarMes(event) {
         break;
 
       default:
-        document.getElementById("mesActual").innerText = navMesAnio[idMesActual + 1].mesAnio;
-        document.getElementById("mesAnterior").innerText = navMesAnio[idMesActual].mes;
-        document.getElementById("mesSiguiente").innerText = navMesAnio[idMesActual + 2].mes;
+        document.getElementById("mesActual").innerText =
+          navMesAnio[idMesActual + 1].mesAnio;
+        document.getElementById("mesAnterior").innerText =
+          navMesAnio[idMesActual].mes;
+        document.getElementById("mesSiguiente").innerText =
+          navMesAnio[idMesActual + 2].mes;
         break;
     }
   }
 }
 
-
 function selectOptions(arr) {
-  const select = document.createElement('select');
+  const select = document.createElement("select");
   arr.forEach((elemento) => {
-    const opcion = document.createElement('option');
+    const opcion = document.createElement("option");
     opcion.value = elemento; // El valor de la opción será igual al elemento
     opcion.textContent = elemento; // El texto visible de la opción también será igual al elemento
     select.appendChild(opcion); // Agrega la opción al select
