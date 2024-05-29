@@ -1,11 +1,11 @@
-import { mainSection } from "./variables.js";
+import { mainSection } from "./v_home.js";
 import {
   tiposMedioPago,
   plazoPago,
   MedioPago,
   mediosPago,
   actualizarMediosPago,
-} from "./mediosDePago.js";
+} from "./d_mediosDePago.js";
 
 import {
   limpiarMainSection,
@@ -16,7 +16,7 @@ import {
   crearGuardarSalirBtn,
 } from "./functions.js";
 
-import { showHome } from "./home.js";
+import { showHome } from "./v_home.js";
 
 let eliminar = [];
 let agregar = [];

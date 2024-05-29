@@ -1,11 +1,14 @@
-import { mainSection } from "./variables.js";
+import { mainSection } from "./v_home.js";
 import {
   categorias,
   Categoria,
   tiposDeCategoria,
-  tiposDeMovimiento,
   actualizarCategorias,
-} from "./categorias.js";
+} from "./d_categorias.js";
+
+import {
+  tiposDeMovimiento,
+} from "./d_movimientos.js";
 
 import {
   limpiarMainSection,
@@ -17,7 +20,7 @@ import {
   guardarAlert,
 } from "./functions.js";
 
-import { showHome } from "./home.js";
+import { showHome } from "./v_home.js";
 
 let eliminar = [];
 let agregar = [];
@@ -60,13 +63,15 @@ function inicializarCategorias() {
 
 function crearFiltros() {
   let filtros = "";
-  tiposDeMovimiento.forEach((tipoMovimiento) => {
+  let chk = "checked"
+  tiposDeMovimiento.forEach((tipoMov) => {
+
     const filtro = `
-          <input type="radio" name="cat" class="btn-check" id="${tipoMovimiento}" autocomplete="off">
-          <label class="btn btn-outline-warning" for="${tipoMovimiento}">${tipoMovimiento}</label>
-          
+          <input type="radio" name="cat" class="btn-check" id="${tipoMov}" autocomplete="off" ${chk}>
+          <label class="btn btn-outline-warning " for="${tipoMov}">${tipoMov}</label>
           `;
     filtros += filtro;
+    chk = ""
   });
   const divFiltros = `<div id="filtrosMenu" class="btn-group" role="group">
           ${filtros}
@@ -104,7 +109,7 @@ function crearListaCat(tipoMovimiento) {
       );
       let ocultar = "";
       if (categoria.tipoMovimiento !== tipoMovimiento) {
-        ocultar = "class = d-none";
+        ocultar = `class = "d-none"`;
       }
 
       const fila = `
@@ -116,6 +121,7 @@ function crearListaCat(tipoMovimiento) {
                 </tr>`;
       filas += fila;
     }
+
   });
 
   const lista = `
@@ -150,10 +156,6 @@ function crearEventListeners() {
     .getElementById("filtrosMenu")
     .addEventListener("click", aplicarFiltros);
 
-  //   const camposEditables = document.getElementsByClassName("editable");
-  //   for (let index = 0; index < camposEditables.length; index++) {
-  //     camposEditables[index].addEventListener("input", guardarAlert(seccionCat));
-  //   }
 }
 
 function eliminarCategoria(event) {
@@ -174,9 +176,9 @@ function agregarNuevaCategoria() {
                     <td id="newNom-${indexNew}"><input class="form-input editable"></td>
                     <td id="newTip-${indexNew}">
                         <select class="form-select form-select-sm editable">${crearSelectOption(
-                          tiposDeCategoria,
-                          ""
-                        )}</select></td>
+    tiposDeCategoria,
+    ""
+  )}</select></td>
                     <td>nuevo</td>`;
   document.getElementById("listBody").appendChild(fila);
   agregar.push(indexNew);

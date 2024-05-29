@@ -1,28 +1,35 @@
+import { showHome } from "./modules/v_home.js";
+export let movImportados = []
 
-import { showHome } from "./modules/home.js";
-
-// const mainSection = document.querySelector("#main");
-
-
-// Gestión de interfaz de usuario
 
 // Home
-showHome()
+window.addEventListener("DOMContentLoaded", () => {
+    cargarMovimientos()
+    showHome()
+});
 
 
 
+async function cargarMovimientos() {
+    try {
+        const response = await fetch('movimientos.json');
+        let movimientosJson = await response.json();
+        iniciarValores(movimientosJson)
+
+        if (!response.ok) {
+            throw new Error('Error al cargar el archivo JSON');
+        }
+
+    } catch (error) {
+        console.error('Error al cargar el archivo:', error.message);
+    }
+
+}
+
+function iniciarValores(arrJson) {
+    localStorage.setItem("movimientos", JSON.stringify(arrJson));
+    movImportados = JSON.parse(localStorage.getItem("movimientos")) || ["nadaporaqui"]
 
 
 
-// document.querySelector("#addMovBtn").addEventListener("click", showAddMov)
-
-// document.querySelector("#edPaymentMethod").addEventListener("click", editPaymentMethod)
-// document.querySelector("#edCategories").addEventListener("click", editCategories)
-
-
-
-
-
-
-
-// showHome();
+}

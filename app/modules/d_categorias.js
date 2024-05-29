@@ -1,5 +1,5 @@
 export const tiposDeCategoria = ["Fijo", "Variable"];
-export const tiposDeMovimiento = ["Ingreso", "Egreso"];
+
 export class Categoria {
   constructor(nombre, tipoMovimiento, tipoCategoria, isVisible, isDeleted) {
     this.nombre = nombre;

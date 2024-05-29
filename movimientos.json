@@ -1,0 +1,271 @@
+[{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-01-10",
+"categoria": "Alquiler",
+"descripcion": "Depto Palermo",
+"monto": 250000,
+"medioPago": "Mercado Pago",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-02-10",
+"categoria": "Alquiler",
+"descripcion": "Depto Palermo",
+"monto": 250000,
+"medioPago": "Mercado Pago",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-03-10",
+"categoria": "Alquiler",
+"descripcion": "Depto Palermo",
+"monto": 250000,
+"medioPago": "Mercado Pago",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-04-10",
+"categoria": "Alquiler",
+"descripcion": "Depto Palermo",
+"monto": 250000,
+"medioPago": "Mercado Pago",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-05-10",
+"categoria": "Alquiler",
+"descripcion": "Depto Palermo",
+"monto": 250000,
+"medioPago": "Mercado Pago",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-01-10",
+"categoria": "Expensas",
+"descripcion": "Depto Palermo",
+"monto": 25000,
+"medioPago": "Mercado Pago",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-02-10",
+"categoria": "Expensas",
+"descripcion": "Depto Palermo",
+"monto": 25000,
+"medioPago": "Mercado Pago",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-03-10",
+"categoria": "Expensas",
+"descripcion": "Depto Palermo",
+"monto": 25000,
+"medioPago": "Mercado Pago",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-04-10",
+"categoria": "Expensas",
+"descripcion": "Depto Palermo",
+"monto": 25000,
+"medioPago": "Mercado Pago",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-05-10",
+"categoria": "Expensas",
+"descripcion": "Depto Palermo",
+"monto": 25000,
+"medioPago": "Mercado Pago",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-01-08",
+"categoria": "Gimnasio",
+"descripcion": "Fit Human",
+"monto": 12000,
+"medioPago": "Tarjeta Naranja",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-02-08",
+"categoria": "Gimnasio",
+"descripcion": "Fit Human",
+"monto": 12000,
+"medioPago": "Tarjeta Naranja",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-03-08",
+"categoria": "Gimnasio",
+"descripcion": "Fit Human",
+"monto": 15000,
+"medioPago": "Tarjeta Naranja",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-04-08",
+"categoria": "Gimnasio",
+"descripcion": "Fit Human",
+"monto": 15000,
+"medioPago": "Tarjeta Naranja",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-05-08",
+"categoria": "Gimnasio",
+"descripcion": "Fit Human",
+"monto": 17000,
+"medioPago": "Tarjeta Naranja",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-01-08",
+"categoria": "Gimnasio",
+"descripcion": "Fit Human",
+"monto": 12000,
+"medioPago": "Tarjeta Naranja",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-01-08",
+"categoria": "Indumentaria",
+"descripcion": "Ver",
+"monto": 12000,
+"medioPago": "Visa Santander",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-02-14",
+"categoria": "Indumentaria",
+"descripcion": "Portsaid",
+"monto": 15000,
+"medioPago": "Visa Santander",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-02-21",
+"categoria": "Indumentaria",
+"descripcion": "Molino",
+"monto": 21000,
+"medioPago": "Visa Santander",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-03-08",
+"categoria": "Indumentaria",
+"descripcion": "Palomina",
+"monto": 36000,
+"medioPago": "Visa Santander",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-04-10",
+"categoria": "Indumentaria",
+"descripcion": "Ver",
+"monto": 25000,
+"medioPago": "Visa Santander",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-05-08",
+"categoria": "Indumentaria",
+"descripcion": "Ver",
+"monto": 35000,
+"medioPago": "Visa Santander",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-01-08",
+"categoria": "Supermercado",
+"descripcion": "Jumbo",
+"monto": 35000,
+"medioPago": "Visa Santander",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-02-08",
+"categoria": "Supermercado",
+"descripcion": "Coto",
+"monto": 35000,
+"medioPago": "Visa Santander",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-03-08",
+"categoria": "Supermercado",
+"descripcion": "Jumbo",
+"monto": 45000,
+"medioPago": "Visa Santander",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-04-08",
+"categoria": "Supermercado",
+"descripcion": "Jumbo",
+"monto": 65000,
+"medioPago": "Visa Santander",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Egreso",
+"fecha": "2024-05-08",
+"categoria": "Supermercado",
+"descripcion": "Vea",
+"monto": 42000,
+"medioPago": "Visa Santander",
+"comentarios": "",
+"isDeleted": false
+}
+]

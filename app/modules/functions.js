@@ -1,14 +1,15 @@
 // Variables
 
-import { mainSection } from "./variables.js";
+import { mainSection } from "./v_home.js";
 
 export function limpiarMainSection() {
   console.log(mainSection);
   const mainHijos = mainSection.children;
-  console.log(mainHijos.length);
-  if (mainHijos.length > 0) {
-    mainSection.removeChild(mainSection.firstChild);
+  for (let index = 0; index < mainHijos.length; index++) {
+    mainHijos[index].remove();
+
   }
+
 }
 
 export function crearEncabezado(seccion) {
@@ -24,6 +25,16 @@ export function crearEncabezado(seccion) {
       titulo = "Categorías";
       parrafo =
         "Organiza por categorías todos tus movimientos financieros. De esta forma podrás analizar qué ocurre con tu dinero.";
+      break;
+    case "agm":
+      titulo = "Agregar movimientos";
+      parrafo =
+        "Por favor ingresa los datos de tus movimientos financieros";
+      break;
+    case "mov":
+      titulo = "Ver movimientos";
+      parrafo =
+        "Aquí están los movimientos financieros que cargaste. En un futuro te prometo que podrás editarlos.";
       break;
 
     default:
