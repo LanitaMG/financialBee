@@ -1,8 +1,6 @@
 import { mainSection, showHome } from "./v_home.js"
-import { crearSelectOption, crearEncabezado, limpiarMainSection, crearGuardarSalirBtn } from "./functions.js";
-import { categorias } from "./d_categorias.js";
-import { tiposDeMovimiento, Movimiento } from "./d_movimientos.js";
-import { mediosPago } from "./d_mediosDePago.js";
+import { crearEncabezado, limpiarMainSection, crearGuardarSalirBtn } from "./functions.js";
+
 
 let dataTable;
 let dataTableCreada = false;
@@ -54,6 +52,7 @@ export function verMovimientos() {
     mainSection.appendChild(sectionVerMov);
     iniciarDataTable()
     crearFiltrosMovimientos()
+    crearEventListeners()
 
 
 }
