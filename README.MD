@@ -1,6 +1,6 @@
 ### CH - JavaScript
 
-### Preentrega 2
+### Entrega Final
 
 # Financial Bee
 
