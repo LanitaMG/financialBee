@@ -204,7 +204,7 @@
 "categoria": "Indumentaria",
 "descripcion": "Ver",
 "monto": 25000,
-"medioPago": "Visa Santander",
+"medioPago": "Visa Santander Deb",
 "comentarios": "",
 "isDeleted": false
 },
@@ -214,7 +214,7 @@
 "categoria": "Indumentaria",
 "descripcion": "Ver",
 "monto": 35000,
-"medioPago": "Visa Santander",
+"medioPago": "Visa Santander Cred",
 "comentarios": "",
 "isDeleted": false
 },
@@ -224,7 +224,7 @@
 "categoria": "Supermercado",
 "descripcion": "Jumbo",
 "monto": 35000,
-"medioPago": "Visa Santander",
+"medioPago": "Visa Santander Cred",
 "comentarios": "",
 "isDeleted": false
 },
@@ -234,7 +234,7 @@
 "categoria": "Supermercado",
 "descripcion": "Coto",
 "monto": 35000,
-"medioPago": "Visa Santander",
+"medioPago": "Visa Santander Deb",
 "comentarios": "",
 "isDeleted": false
 },
@@ -244,7 +244,7 @@
 "categoria": "Supermercado",
 "descripcion": "Jumbo",
 "monto": 45000,
-"medioPago": "Visa Santander",
+"medioPago": "Visa Santander Deb",
 "comentarios": "",
 "isDeleted": false
 },
@@ -254,7 +254,7 @@
 "categoria": "Supermercado",
 "descripcion": "Jumbo",
 "monto": 65000,
-"medioPago": "Visa Santander",
+"medioPago": "Visa Santander Cred",
 "comentarios": "",
 "isDeleted": false
 },
@@ -264,7 +264,67 @@
 "categoria": "Supermercado",
 "descripcion": "Vea",
 "monto": 42000,
-"medioPago": "Visa Santander",
+"medioPago": "Visa Santander Deb",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Ingreso",
+"fecha": "2024-01-02",
+"categoria": "Sueldo",
+"descripcion": "Diciembre 2023",
+"monto": 650000,
+"medioPago": "Visa Santander Deb",
+"comentarios": "No incluye aguinaldo",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Ingreso",
+"fecha": "2024-01-10",
+"categoria": "Sueldo",
+"descripcion": "Aguinaldo 2023",
+"monto": 325000,
+"medioPago": "Visa Santander Deb",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Ingreso",
+"fecha": "2024-02-02",
+"categoria": "Sueldo",
+"descripcion": "Enero 2024",
+"monto": 650000,
+"medioPago": "Visa Santander Deb",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Ingreso",
+"fecha": "2024-03-02",
+"categoria": "Sueldo",
+"descripcion": "Febrero 2024",
+"monto": 670000,
+"medioPago": "Visa Santander Deb",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Ingreso",
+"fecha": "2024-04-02",
+"categoria": "Sueldo",
+"descripcion": "Marzo 2024",
+"monto": 650000,
+"medioPago": "Visa Santander Deb",
+"comentarios": "",
+"isDeleted": false
+},
+{
+"tipoMovimiento": "Ingreso",
+"fecha": "2024-05-02",
+"categoria": "Sueldo",
+"descripcion": "Abril 2024",
+"monto": 750000,
+"medioPago": "Visa Santander Deb",
 "comentarios": "",
 "isDeleted": false
 }

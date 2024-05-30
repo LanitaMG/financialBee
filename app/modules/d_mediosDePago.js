@@ -7,7 +7,6 @@ export let tiposMedioPago = [
   "Tarjeta prepaga",
   "Criptomonedas",
 ];
-export let plazoPago = ["Inmediato", "Diferido"];
 
 export class MedioPago {
   constructor(id, nombre, tipo, isVisible, isDeleted) {
@@ -18,18 +17,6 @@ export class MedioPago {
     this.isDeleted = isDeleted;
   }
 
-  calcularProxMes10(date) {
-    const mesActual = date.getMonth();
-    const anioActual = date.getFullYear();
-
-    // Calculate the next month
-    const mesProximo = (mesActual + 1) % 12;
-    const anioProximo = mesProximo === 0 ? anioActual + 1 : anioActual;
-
-    // Set the date to the 10th day of the next month
-    const mesProximo10 = new Date(anioProximo, mesProximo, 10);
-    return mesProximo10;
-  }
 }
 
 export let mediosPago = [];
@@ -39,16 +26,16 @@ mediosPago.push(
 );
 mediosPago.push(new MedioPago(2, "Tarjeta Naranja", "Efectivo", true, false));
 mediosPago.push(
-  new MedioPago(3, "Visa Santander", "Tarjeta de débito", true, false)
+  new MedioPago(3, "Visa Santander Deb", "Tarjeta de débito", true, false)
 );
 mediosPago.push(
-  new MedioPago(4, "Visa BBVA Francés", "Tarjeta de débito", true, false)
+  new MedioPago(4, "Visa BBVA Francés Deb", "Tarjeta de débito", true, false)
 );
 mediosPago.push(
-  new MedioPago(5, "Visa Santander", "Tarjeta de crédito", false, false)
+  new MedioPago(5, "Visa Santander Cred", "Tarjeta de crédito", false, false)
 );
 mediosPago.push(
-  new MedioPago(6, "Amex Santander", "Tarjeta de crédito", true, false)
+  new MedioPago(6, "Amex Santander Cred", "Tarjeta de crédito", true, false)
 );
 
 export const actualizarMediosPago = () => {

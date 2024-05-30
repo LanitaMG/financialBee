@@ -1,26 +1,10 @@
-import { mainSection } from "./v_home.js";
+import { mainSection, showHome } from "./v_home.js";
+import { categorias, Categoria, tiposDeCategoria, actualizarCategorias } from "./d_categorias.js";
+import { tiposDeMovimiento } from "./d_movimientos.js";
 import {
-  categorias,
-  Categoria,
-  tiposDeCategoria,
-  actualizarCategorias,
-} from "./d_categorias.js";
-
-import {
-  tiposDeMovimiento,
-} from "./d_movimientos.js";
-
-import {
-  limpiarMainSection,
-  crearEncabezado,
-  crearAgregarBtn,
-  crearSelectOption,
-  crearCheckbox,
-  crearGuardarSalirBtn,
+  limpiarMainSection, crearEncabezado, crearAgregarBtn, crearSelectOption, crearCheckbox, crearGuardarSalirBtn,
   guardarAlert,
 } from "./functions.js";
-
-import { showHome } from "./v_home.js";
 
 let eliminar = [];
 let agregar = [];
@@ -31,7 +15,7 @@ export function editarCategorias() {
   limpiarMainSection();
   inicializarCategorias();
   const encabezado = crearEncabezado(seccionCat);
-  const filtrosBtns = crearFiltros();
+  const filtrosBtns = crearFiltrosTipoMov();
   const tabla = crearTablaCat(tiposDeMovimiento[0]);
 
   const agregarBtn = crearAgregarBtn(seccionCat);
@@ -61,7 +45,7 @@ function inicializarCategorias() {
   }
 }
 
-function crearFiltros() {
+function crearFiltrosTipoMov() {
   let filtros = "";
   let chk = "checked"
   tiposDeMovimiento.forEach((tipoMov) => {
@@ -146,7 +130,10 @@ function crearEventListeners() {
   document
     .getElementById("agregarcatBtn")
     .addEventListener("click", agregarNuevaCategoria);
-  document.getElementById("salircatBtn").addEventListener("click", showHome);
+
+  document
+    .getElementById("salircatBtn")
+    .addEventListener("click", showHome);
 
   document
     .getElementById("guardarcatBtn")
@@ -201,54 +188,62 @@ function aplicarFiltros(event) {
 }
 
 function guardarCambiosCat() {
-  categorias.forEach((categoria, index) => {
-    if (!categoria.isDeleted) {
-      const check = document.getElementById(`isVis-${index}`).firstChild;
-      categoria.isVisible = check.checked;
-      const selOpt = document.getElementById(`tip-${index}`).firstChild;
-      categoria.tipoCategoria = selOpt.value;
+  try {
+    // Gaurdar modificaciones en los inputs de las categorías existentes
+    categorias.forEach((categoria, index) => {
+      if (!categoria.isDeleted) {
+        const check = document.getElementById(`isVis-${index}`).firstChild;
+        categoria.isVisible = check.checked;
+        const selOpt = document.getElementById(`tip-${index}`).firstChild;
+        categoria.tipoCategoria = selOpt.value;
+      }
+    });
+
+    // Eliminar categorías
+    if (eliminar.length > 0) {
+      eliminar.forEach((catIndex) => {
+        console.log(catIndex);
+        categorias[catIndex].isDeleted = true;
+      });
     }
-  });
 
-  if (eliminar.length > 0) {
-    eliminar.forEach((catIndex) => {
-      console.log(catIndex);
-      categorias[catIndex].isDeleted = true;
-    });
+    // Agregar nuevas categorías
+    if (agregar.length > 0) {
+      console.table(agregar);
+      agregar.forEach((nuevoIndex) => {
+        const isVisibleCh = document.getElementById(
+          `newVis-${nuevoIndex}`
+        ).firstChild;
+        const isVisible = isVisibleCh.checked;
+        const nombreInp = document.getElementById(
+          `newNom-${nuevoIndex}`
+        ).firstChild;
+        let nombre = nombreInp.value.trim();
+        if (nombre.length > 0) {
+          nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+        } else nombre = "sin nombre";
+        const tipoSel = document.getElementById(
+          `newTip-${nuevoIndex}`
+        ).firstChild;
+        const tipoCategoria = tipoSel.value;
+        const tipoMovimiento = tipoMovSeleccionado;
+
+        const nuevaCat = new Categoria(
+          nombre,
+          tipoMovimiento,
+          tipoCategoria,
+          isVisible,
+          false
+        );
+        categorias.push(nuevaCat);
+
+        console.log(nuevaCat);
+        console.log(categorias);
+      });
+    }
+    localStorage.setItem("categorias", JSON.stringify(categorias));
+    editarCategorias();
+  } catch (error) {
+    console.log(error);
   }
-  if (agregar.length > 0) {
-    console.table(agregar);
-    agregar.forEach((nuevoIndex) => {
-      const isVisibleCh = document.getElementById(
-        `newVis-${nuevoIndex}`
-      ).firstChild;
-      const isVisible = isVisibleCh.checked;
-      const nombreInp = document.getElementById(
-        `newNom-${nuevoIndex}`
-      ).firstChild;
-      let nombre = nombreInp.value.trim();
-      if (nombre.length > 0) {
-        nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
-      } else nombre = "sin nombre";
-      const tipoSel = document.getElementById(
-        `newTip-${nuevoIndex}`
-      ).firstChild;
-      const tipoCategoria = tipoSel.value;
-      const tipoMovimiento = tipoMovSeleccionado;
-
-      const nuevaCat = new Categoria(
-        nombre,
-        tipoMovimiento,
-        tipoCategoria,
-        isVisible,
-        false
-      );
-      categorias.push(nuevaCat);
-
-      console.log(nuevaCat);
-      console.log(categorias);
-    });
-  }
-  localStorage.setItem("categorias", JSON.stringify(categorias));
-  editarCategorias();
 }

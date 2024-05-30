@@ -6,15 +6,16 @@ import { mediosPago } from "./d_mediosDePago.js";
 
 const seccionAgr = 'agm'
 let tipoMovSeleccionado = tiposDeMovimiento[0];
+let movAgregados = [];
 
 export function agregarMovimiento() {
     limpiarMainSection()
-    // inicializarMovimiento()
     const filtrosBtns = crearFiltros()
     const encabezado = crearEncabezado(seccionAgr)
     const form = crearFomulario()
     const btns = crearGuardarSalirBtn(seccionAgr)
     const sectionAgregarMovimiento = document.createElement("section");
+    const movAgregadosDetalle = mostrarMovAgregados();
     sectionAgregarMovimiento.id = "sectionCategoria";
     sectionAgregarMovimiento.innerHTML = `
      <section class="m-3 text-center shadow  rounded mx-auto p-5" style="max-width: 768px">
@@ -22,26 +23,25 @@ export function agregarMovimiento() {
         ${filtrosBtns}
         ${form}
         ${btns}
-        </section>
+        ${movAgregadosDetalle}
         `;
     mainSection.insertBefore(sectionAgregarMovimiento, mainSection.children[1])
-
     crearEventListeners()
 }
 
 
 function crearFomulario() {
-
     const selectCategorias = crearSelectOption(categorias.filter(categoria => categoria.tipoMovimiento == tipoMovSeleccionado).map(categoria => categoria.nombre), "")
-    console.log(selectCategorias);
     const selectMediosPago = crearSelectOption(mediosPago.map(medio => medio.nombre), "")
+    const fechaActual = new Date();
+    const fechaInput = fechaActual.toISOString().substring(0, 10);
 
     let form = `
 <form class="w-75 m-auto mt-3 text-start">
         
             <div class="input-group mb-3">
                 <label class="input-group-text" for="fechaMov">Fecha</label>
-                <input type="date" id="fechaMov" class="form-control" required>
+                <input type="date" id="fechaMov" class="form-control"  value="${fechaInput}" required>
             </div>
             <div class="input-group mb-3">
                 <label class="input-group-text" for="selCategoria">Categoría</label>
@@ -74,7 +74,6 @@ function crearFomulario() {
             </div>
             </form>
             <p id="error" class="text-danger"></p>
-            
             `
     return form
 }
@@ -84,7 +83,6 @@ function crearFiltros() {
     let filtros = "";
     let chk = "checked"
     tiposDeMovimiento.forEach((tipoMov) => {
-
         const filtro = `
           <input type="radio" name="cat" class="btn-check" id="${tipoMov}" autocomplete="off" ${chk}>
           <label class="btn btn-outline-warning " for="${tipoMov}">${tipoMov}</label>
@@ -99,7 +97,6 @@ function crearFiltros() {
 }
 
 function crearEventListeners() {
-
     document
         .getElementById("guardaragmBtn")
         .addEventListener("click", guardarMovimiento);
@@ -136,9 +133,10 @@ function guardarMovimiento() {
         let movimientos = JSON.parse(localStorage.getItem("movimientos"))
         movimientos.push(nuevoMovimiento)
 
-        // movimientos.push(nuevoMovimiento)
-        localStorage.setItem("movimientos", JSON.stringify(movimientos));
 
+        localStorage.setItem("movimientos", JSON.stringify(movimientos));
+        movAgregados.push(`${descripcion} - $${montoTotal}`)
+        agregarMovimiento()
 
 
     } catch (error) {
@@ -147,11 +145,13 @@ function guardarMovimiento() {
     }
 }
 
-function obtenerTipoPorNombre(nombreMedio) {
-    const medioEncontrado = mediosPago.find(medio => medio.nombre === nombreMedio);
-    if (medioEncontrado) {
-        return medioEncontrado.tipo;
-    } else {
-        return "Medio de pago no encontrado";
+function mostrarMovAgregados() {
+    let movAgr = ""
+    if (movAgregados.length > 0) {
+        movAgregados.forEach(mov => {
+            movAgr += `<p class="m-0">${mov}</p>`
+        });
     }
+    return `Movimientos: ${movAgregados.length}
+            ${movAgr}`
 }

@@ -1,22 +1,7 @@
-import { mainSection } from "./v_home.js";
-import {
-  tiposMedioPago,
-  plazoPago,
-  MedioPago,
-  mediosPago,
-  actualizarMediosPago,
-} from "./d_mediosDePago.js";
+import { mainSection, showHome } from "./v_home.js";
+import { tiposMedioPago, MedioPago, mediosPago, actualizarMediosPago } from "./d_mediosDePago.js";
+import { limpiarMainSection, crearEncabezado, crearAgregarBtn, crearSelectOption, crearCheckbox, crearGuardarSalirBtn, guardarAlert } from "./functions.js";
 
-import {
-  limpiarMainSection,
-  crearEncabezado,
-  crearAgregarBtn,
-  crearSelectOption,
-  crearCheckbox,
-  crearGuardarSalirBtn,
-} from "./functions.js";
-
-import { showHome } from "./v_home.js";
 
 let eliminar = [];
 let agregar = [];
@@ -29,16 +14,17 @@ export function editarMedioPago() {
   const tabla = crearTablaMDP();
   const agregarBtn = crearAgregarBtn(seccionMDP);
   const guardarSalirBtn = crearGuardarSalirBtn(seccionMDP);
-
   const sectionEditarMediosPago = document.createElement("section");
   sectionEditarMediosPago.id = "sectionMediosDePago";
   sectionEditarMediosPago.innerHTML = `
-  <section class="m-3 text-center shadow  rounded mx-auto p-5" style="max-width: 768px">
+  <div class="m-3 text-center shadow  rounded mx-auto p-5" style="max-width: 768px">
   ${encabezado}
   ${tabla}
   ${agregarBtn}
+  <p id="error" class"text-danger"></p>
   ${guardarSalirBtn}
-  </section>
+  <p id="cambiosMDP"></p>
+  </div>
   `;
   mainSection.appendChild(sectionEditarMediosPago);
   crearEventListeners();
@@ -108,9 +94,13 @@ function crearEventListeners() {
   document
     .getElementById("agregarmdpBtn")
     .addEventListener("click", agregarNuevoMedio);
-  document.getElementById("salirMPBtn").addEventListener("click", showHome);
+
   document
-    .getElementById("guardarMPBtn")
+    .getElementById("salirmdpBtn")
+    .addEventListener("click", showHome);
+
+  document
+    .getElementById("guardarmdpBtn")
     .addEventListener("click", guardarCambiosMP);
 }
 
@@ -119,62 +109,74 @@ function agregarNuevoMedio() {
   const fila = document.createElement("tr");
   fila.id = `newMP-${indexNew}`;
   fila.innerHTML = `               
-                    <td id="newVis-${indexNew}">${crearCheckbox(true)}</td>
-                    <td id="newNom-${indexNew}"><input class="form-input"></td>
-                    <td id="newTip-${indexNew}"><select class="form-select form-select-sm">${crearSelectOption(
-    tiposMedioPago,
-    ""
-  )}</select></td>
-                    <td></td>`;
+      <td id="newVis-${indexNew}">${crearCheckbox(true)}</td>
+      <td id="newNom-${indexNew}"><input class="form-input"></td>
+      <td id="newTip-${indexNew}"><select class="form-select form-select-sm">${crearSelectOption(
+    tiposMedioPago, "")}</select></td>
+      <td><span class="badge bg-warning text-wrap" style="width: rem;">Nuevo</span></td>
+      `;
   document.getElementById("listBody").appendChild(fila);
   agregar.push(indexNew);
+  guardarAlert(seccionMDP)
 }
 
 function eliminarMedioPago(event) {
+  guardarAlert(seccionMDP)
   let index = event.target.id.replace("del-", "");
   eliminar.push(parseInt(index));
   document.getElementById(`mdp-${index}`).style.display = "none";
 }
 
 function guardarCambiosMP() {
-  mediosPago.forEach((medio, index) => {
-    if (!medio.isDeleted) {
-      const check = document.getElementById(`isVis-${index}`).firstChild;
-      medio.isVisible = check.checked;
-      const selOpt = document.getElementById(`tip-${index}`).firstChild;
-      medio.tipo = selOpt.value;
+  try {
+    // Guardar las modificaciones ingresada en los inputs de medios existentes
+    mediosPago.forEach((medio, index) => {
+      if (!medio.isDeleted) {
+        const check = document.getElementById(`isVis-${index}`).firstChild;
+        medio.isVisible = check.checked;
+        const selOpt = document.getElementById(`tip-${index}`).firstChild;
+        medio.tipo = selOpt.value;
+      }
+    });
+
+    // Eliminar medios
+    if (eliminar.length > 0) {
+      eliminar.forEach((medioIndex) => {
+        mediosPago[medioIndex].isDeleted = true;
+      });
     }
-  });
 
-  if (eliminar.length > 0) {
-    eliminar.forEach((medioIndex) => {
-      console.log(medioIndex);
-      mediosPago[medioIndex].isDeleted = true;
-    });
-  }
-  if (agregar.length > 0) {
-    agregar.forEach((nuevoIndex) => {
-      const id = nuevoIndex;
-      const isVisibleCh = document.getElementById(
-        `isVis-${nuevoIndex}`
-      ).firstChild;
-      const isVisible = isVisibleCh.checked;
-      const nombreInp = document.getElementById(
-        `newNom-${nuevoIndex}`
-      ).firstChild;
-      let nombre = nombreInp.value.trim();
-      if (nombre.length > 0) {
-        nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
-      } else nombre = "sin nombre";
-      const tipoSel = document.getElementById(
-        `newTip-${nuevoIndex}`
-      ).firstChild;
-      const tipo = tipoSel.value;
+    // Agregar nuevos medios
+    if (agregar.length > 0) {
+      agregar.forEach((nuevoIndex) => {
+        const id = nuevoIndex;
+        const isVisibleCh = document.getElementById(
+          `isVis-${nuevoIndex}`
+        ).firstChild;
+        const isVisible = isVisibleCh.checked;
+        const nombreInp = document.getElementById(
+          `newNom-${nuevoIndex}`
+        ).firstChild;
+        let nombre = nombreInp.value.trim();
+        if (nombre.length > 0) {
+          nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+        } else nombre = "sin nombre";
+        const tipoSel = document.getElementById(
+          `newTip-${nuevoIndex}`
+        ).firstChild;
+        const tipo = tipoSel.value;
 
-      const nuevoMP = new MedioPago(id, nombre, tipo, isVisible, false);
-      mediosPago.push(nuevoMP);
-    });
+        const nuevoMP = new MedioPago(id, nombre, tipo, isVisible, false);
+        mediosPago.push(nuevoMP);
+      });
+    }
+    localStorage.setItem("mediosDePago", JSON.stringify(mediosPago));
+    editarMedioPago();
+    document.getElementById("cambiosMDP").textContent = "¡Cambios guardados!"
+  } catch (error) {
+    document.getElementById("error").textContent = "Por favor revise los datos ingresados"
+    console.log(error);
+
   }
-  localStorage.setItem("mediosDePago", JSON.stringify(mediosPago));
-  editarMedioPago();
 }
+
