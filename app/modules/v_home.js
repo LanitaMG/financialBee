@@ -72,7 +72,7 @@ export function showHome() {
 function crearBalanceMovimientos(indice) {
   const mesActual = balanceDatos[indice].mes
   const mesAnterior = indice > 0 ? balanceDatos[indice - 1].mes : ""
-  const mesSiguiente = indice < balanceDatos.length ? balanceDatos[indice + 1].mes : ""
+  const mesSiguiente = indice < balanceDatos.length - 1 ? balanceDatos[indice + 1].mes : ""
   const totalIngresos = formatoMoneda(balanceDatos[indice].ingresos)
   const totalEgresos = formatoMoneda(balanceDatos[indice].egresos)
   const ingresoFijoRatio = balanceDatos[indice].ingresosFijosP
@@ -168,7 +168,10 @@ function actualizarBalance(event) {
     default:
       break;
   }
-  document.getElementById("sectionBalance").innerHTML = crearBalanceMovimientos(indiceBalance)
-  document.getElementById("navMes")
-    .addEventListener("click", actualizarBalance)
+  if (indiceBalance >= 0 && indiceBalance < balanceDatos.length) {
+    document.getElementById("sectionBalance").innerHTML = crearBalanceMovimientos(indiceBalance)
+    document.getElementById("navMes")
+      .addEventListener("click", actualizarBalance)
+
+  }
 }
