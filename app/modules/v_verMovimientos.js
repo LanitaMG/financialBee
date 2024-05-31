@@ -1,5 +1,5 @@
 import { mainSection, showHome } from "./v_home.js"
-import { crearEncabezado, limpiarMainSection, crearGuardarSalirBtn } from "./functions.js";
+import { crearEncabezado, limpiarMainSection, crearGuardarSalirBtn, formatoMoneda } from "./functions.js";
 
 
 let dataTable;
@@ -106,13 +106,7 @@ function crearListaMov() {
     return lista;
 }
 
-function formatoMoneda(valor) {
-    return valor.toLocaleString('es-AR', {
-        style: 'currency',
-        currency: 'ARS',
-        minimumFractionDigits: 2,
-    });
-}
+
 
 
 function crearFiltrosMovimientos() {

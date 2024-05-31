@@ -106,3 +106,43 @@ export function guardarAlert(seccion) {
   const btnGuardar = document.getElementById(`guardar${seccion}Btn`);
   btnGuardar.classList += "border border-dark"
 }
+
+
+
+export function formatoMoneda(valor) {
+  return valor.toLocaleString('es-AR', {
+    style: 'currency',
+    currency: 'ARS',
+    minimumFractionDigits: 2,
+  });
+}
+
+
+
+// Array que contiene el total de ingresos y egresos por mes. En una app funcional, será reemplazado por una función que calcule estos valores a partir del array de movimientos
+export const balanceDatos = [
+  { "nroMes": 0, "anio": 2023, "mes": "Enero 2023", "ingresos": 559460, "ingresosFijosP": "75%", "ingresosVariablesP": "25%", "egresos": 621780, "egresosFijosP": "52%", "egresosVariablesP": "48%", },
+  { "nroMes": 1, "anio": 2023, "mes": "Febrero 2023", "ingresos": 543891, "ingresosFijosP": "82%", "ingresosVariablesP": "18%", "egresos": 592045, "egresosFijosP": "53%", "egresosVariablesP": "47%", },
+  { "nroMes": 2, "anio": 2023, "mes": "Marzo 2023", "ingresos": 548137, "ingresosFijosP": "75%", "ingresosVariablesP": "25%", "egresos": 570059, "egresosFijosP": "57%", "egresosVariablesP": "43%", },
+  { "nroMes": 3, "anio": 2023, "mes": "Abril 2023", "ingresos": 626440, "ingresosFijosP": "80%", "ingresosVariablesP": "20%", "egresos": 361216, "egresosFijosP": "88%", "egresosVariablesP": "12%", },
+  { "nroMes": 4, "anio": 2023, "mes": "Mayo 2023", "ingresos": 547607, "ingresosFijosP": "83%", "ingresosVariablesP": "17%", "egresos": 572661, "egresosFijosP": "58%", "egresosVariablesP": "42%", },
+  { "nroMes": 5, "anio": 2023, "mes": "Junio 2023", "ingresos": 539023, "ingresosFijosP": "76%", "ingresosVariablesP": "24%", "egresos": 639513, "egresosFijosP": "53%", "egresosVariablesP": "47%", },
+  { "nroMes": 6, "anio": 2023, "mes": "Julio 2023", "ingresos": 652981, "ingresosFijosP": "78%", "ingresosVariablesP": "22%", "egresos": 372206, "egresosFijosP": "92%", "egresosVariablesP": "8%", },
+  { "nroMes": 7, "anio": 2023, "mes": "Agosto 2023", "ingresos": 617612, "ingresosFijosP": "81%", "ingresosVariablesP": "19%", "egresos": 441831, "egresosFijosP": "78%", "egresosVariablesP": "22%", },
+  { "nroMes": 8, "anio": 2023, "mes": "Septiembre 2023", "ingresos": 595739, "ingresosFijosP": "90%", "ingresosVariablesP": "10%", "egresos": 610613, "egresosFijosP": "52%", "egresosVariablesP": "48%", },
+  { "nroMes": 9, "anio": 2023, "mes": "Octubre 2023", "ingresos": 532557, "ingresosFijosP": "82%", "ingresosVariablesP": "18%", "egresos": 641276, "egresosFijosP": "48%", "egresosVariablesP": "52%", },
+  { "nroMes": 10, "anio": 2023, "mes": "Noviembre 2023", "ingresos": 585176, "ingresosFijosP": "82%", "ingresosVariablesP": "18%", "egresos": 577039, "egresosFijosP": "59%", "egresosVariablesP": "41%", },
+  { "nroMes": 11, "anio": 2023, "mes": "Diciembre 2023", "ingresos": 600373, "ingresosFijosP": "78%", "ingresosVariablesP": "22%", "egresos": 604378, "egresosFijosP": "57%", "egresosVariablesP": "43%", },
+  { "nroMes": 0, "anio": 2024, "mes": "Enero 2024", "ingresos": 655822, "ingresosFijosP": "80%", "ingresosVariablesP": "20%", "egresos": 616406, "egresosFijosP": "51%", "egresosVariablesP": "49%", },
+  { "nroMes": 1, "anio": 2024, "mes": "Febrero 2024", "ingresos": 528652, "ingresosFijosP": "88%", "ingresosVariablesP": "12%", "egresos": 593631, "egresosFijosP": "54%", "egresosVariablesP": "46%", },
+  { "nroMes": 2, "anio": 2024, "mes": "Marzo 2024", "ingresos": 626853, "ingresosFijosP": "82%", "ingresosVariablesP": "18%", "egresos": 363026, "egresosFijosP": "94%", "egresosVariablesP": "6%", },
+  { "nroMes": 3, "anio": 2024, "mes": "Abril 2024", "ingresos": 634349, "ingresosFijosP": "77%", "ingresosVariablesP": "23%", "egresos": 389633, "egresosFijosP": "81%", "egresosVariablesP": "19%", },
+  { "nroMes": 4, "anio": 2024, "mes": "Mayo 2024", "ingresos": 662808, "ingresosFijosP": "82%", "ingresosVariablesP": "18%", "egresos": 380807, "egresosFijosP": "92%", "egresosVariablesP": "8%", },
+  { "nroMes": 5, "anio": 2024, "mes": "Junio 2024", "ingresos": 664709, "ingresosFijosP": "81%", "ingresosVariablesP": "19%", "egresos": 484359, "egresosFijosP": "65%", "egresosVariablesP": "35%", },
+  { "nroMes": 6, "anio": 2024, "mes": "Julio 2024", "ingresos": 589826, "ingresosFijosP": "77%", "ingresosVariablesP": "23%", "egresos": 595049, "egresosFijosP": "54%", "egresosVariablesP": "46%", },
+  { "nroMes": 7, "anio": 2024, "mes": "Agosto 2024", "ingresos": 653511, "ingresosFijosP": "81%", "ingresosVariablesP": "19%", "egresos": 538513, "egresosFijosP": "62%", "egresosVariablesP": "38%", },
+  { "nroMes": 8, "anio": 2024, "mes": "Septiembre 2024", "ingresos": 519604, "ingresosFijosP": "83%", "ingresosVariablesP": "17%", "egresos": 414583, "egresosFijosP": "76%", "egresosVariablesP": "24%", },
+  { "nroMes": 9, "anio": 2024, "mes": "Octubre 2024", "ingresos": 556597, "ingresosFijosP": "77%", "ingresosVariablesP": "23%", "egresos": 440559, "egresosFijosP": "70%", "egresosVariablesP": "30%", },
+  { "nroMes": 10, "anio": 2024, "mes": "Noviembre 2024", "ingresos": 568324, "ingresosFijosP": "83%", "ingresosVariablesP": "17%", "egresos": 655365, "egresosFijosP": "50%", "egresosVariablesP": "50%", },
+  { "nroMes": 11, "anio": 2024, "mes": "Diciembre 2024", "ingresos": 486936, "ingresosFijosP": "83%", "ingresosVariablesP": "17%", "egresos": 358909, "egresosFijosP": "94%", "egresosVariablesP": "6%", }
+]
