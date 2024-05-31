@@ -68,6 +68,7 @@ export function showHome() {
     .addEventListener("click", actualizarBalance)
 }
 
+// Esta función debería recorrer el array de movimientos y generar dinámicamente los totales. En este momento funciona contra un array Demo.
 function crearBalanceMovimientos(indice) {
   const mesActual = balanceDatos[indice].mes
   const mesAnterior = indice > 0 ? balanceDatos[indice - 1].mes : ""
