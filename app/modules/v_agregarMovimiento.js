@@ -23,10 +23,13 @@ export function agregarMovimiento() {
         ${filtrosBtns}
         ${form}
         ${btns}
+        <p id="mensajeError" class="text-danger"></p>
         ${movAgregadosDetalle}
         `;
     mainSection.insertBefore(sectionAgregarMovimiento, mainSection.children[1])
     crearEventListeners()
+
+
 }
 
 
@@ -37,7 +40,7 @@ function crearFomulario() {
     const fechaInput = fechaActual.toISOString().substring(0, 10);
 
     let form = `
-<form class="w-75 m-auto mt-3 text-start">
+<form id="agrMovForm" class="w-75 m-auto mt-3 text-start" >
         
             <div class="input-group mb-3">
                 <label class="input-group-text" for="fechaMov">Fecha</label>
@@ -52,11 +55,14 @@ function crearFomulario() {
             <div class="input-group mb-3">
                 <label class="input-group-text" for="descripcion">Descripción</label>
                 <input type="text" class="form-control" id="descripcion" required>
+
             </div>
         
             <div class="input-group mb-3">
                 <label class="input-group-text" for="monto">Monto</label>
                 <input type="number" id="monto" class="form-control" required>
+
+
             </div>
             <div class="input-group mb-3">
                 <label class="input-group-text" for="selMedioPago">Medio de pago</label>
@@ -64,16 +70,12 @@ function crearFomulario() {
                 ${selectMediosPago}
                 </select>
             </div>
-
-     
             <div class="input-group mb-3">
                 <label class="input-group-text" for="comentarios">Comentarios</label>
                 <input type="text" class="form-control" id="comentarios">
             </div>
-            
-            </div>
+                   
             </form>
-            <p id="error" class="text-danger"></p>
             `
     return form
 }
@@ -112,15 +114,12 @@ function crearEventListeners() {
 
 
 function cambioTipoMov(event) {
-    console.log(event)
     tipoMovSeleccionado = event.target.id
     const selectCategorias = crearSelectOption(categorias.filter(categoria => categoria.tipoMovimiento == tipoMovSeleccionado).map(categoria => categoria.nombre), "")
     document.getElementById("selCategoria").innerHTML = selectCategorias
 }
 
 function guardarMovimiento() {
-    console.log("guardar Movimiento")
-    // obtenerDatosForm()
     try {
         const fechaMov = document.getElementById("fechaMov").value;
         const categoria = document.getElementById("selCategoria").value;
@@ -129,18 +128,25 @@ function guardarMovimiento() {
         const medioPago = document.getElementById("selMedioPago").value;
         const comentarios = document.getElementById("comentarios").value;
 
-        let nuevoMovimiento = new Movimiento(tipoMovSeleccionado, fechaMov, categoria, descripcion, montoTotal, medioPago, comentarios, false)
-        let movimientos = JSON.parse(localStorage.getItem("movimientos"))
-        movimientos.push(nuevoMovimiento)
+        const validarFormulario = (descripcion.trim().length > 0 && parseInt(monto) > 0) > 0 ? true : false;
+
+        if (validarFormulario) {
+            let nuevoMovimiento = new Movimiento(tipoMovSeleccionado, fechaMov, categoria, descripcion, montoTotal, medioPago, comentarios, false)
+            let movimientos = JSON.parse(localStorage.getItem("movimientos"))
+            movimientos.push(nuevoMovimiento)
 
 
-        localStorage.setItem("movimientos", JSON.stringify(movimientos));
-        movAgregados.push(`${descripcion} - $${montoTotal}`)
-        agregarMovimiento()
+            localStorage.setItem("movimientos", JSON.stringify(movimientos));
+            movAgregados.push(`${descripcion} - $${montoTotal}`)
+            agregarMovimiento()
+        }
+        else {
+            document.getElementById("mensajeError").textContent = "Descripción y monto son campos requeridos"
 
+        }
 
     } catch (error) {
-        document.getElementById("error").textContent = "Por favor, revise los datos ingresados"
+        document.getElementById("mensajeError").textContent = "Por favor, revise los datos ingresados. Descripción y monto son campos requeridos"
         console.log(error);
     }
 }
@@ -155,3 +161,4 @@ function mostrarMovAgregados() {
     return `Movimientos: ${movAgregados.length}
             ${movAgr}`
 }
+

@@ -112,7 +112,6 @@ function formatoMoneda(valor) {
         currency: 'ARS',
         minimumFractionDigits: 2,
     });
-    console.log(valor)
 }
 
 

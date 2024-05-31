@@ -7,6 +7,8 @@ let eliminar = [];
 let agregar = [];
 const seccionMDP = "mdp";
 
+
+
 export function editarMedioPago() {
   limpiarMainSection();
   inicializarMP();
@@ -21,9 +23,9 @@ export function editarMedioPago() {
   ${encabezado}
   ${tabla}
   ${agregarBtn}
-  <p id="error" class"text-danger"></p>
+  <p id="mensajeError" class"text-danger"></p>
   ${guardarSalirBtn}
-  <p id="cambiosMDP"></p>
+  <p id="mensajeGuardar"></p>
   </div>
   `;
   mainSection.appendChild(sectionEditarMediosPago);
@@ -117,11 +119,14 @@ function agregarNuevoMedio() {
       `;
   document.getElementById("listBody").appendChild(fila);
   agregar.push(indexNew);
-  guardarAlert(seccionMDP)
+  document.getElementById("mensajeGuardar").textContent = ""
+  guardarAlert(seccionMDP);
+
 }
 
 function eliminarMedioPago(event) {
   guardarAlert(seccionMDP)
+  document.getElementById("mensajeGuardar").textContent = ""
   let index = event.target.id.replace("del-", "");
   eliminar.push(parseInt(index));
   document.getElementById(`mdp-${index}`).style.display = "none";
@@ -165,16 +170,15 @@ function guardarCambiosMP() {
           `newTip-${nuevoIndex}`
         ).firstChild;
         const tipo = tipoSel.value;
-
         const nuevoMP = new MedioPago(id, nombre, tipo, isVisible, false);
         mediosPago.push(nuevoMP);
       });
     }
     localStorage.setItem("mediosDePago", JSON.stringify(mediosPago));
     editarMedioPago();
-    document.getElementById("cambiosMDP").textContent = "¡Cambios guardados!"
+    document.getElementById("mensajeGuardar").textContent = "¡Cambios guardados!"
   } catch (error) {
-    document.getElementById("error").textContent = "Por favor revise los datos ingresados"
+    document.getElementById("mensajeError").textContent = "Por favor revise los datos ingresados"
     console.log(error);
 
   }

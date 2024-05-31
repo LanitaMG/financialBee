@@ -28,7 +28,9 @@ export function editarCategorias() {
         ${filtrosBtns}
         ${tabla}
         ${agregarBtn}
+        <p id="mensajeError" class"text-danger"></p>
         ${guardarSalirBtn}
+        <p id="mensajeGuardar"></p>
      </section>
      `;
   mainSection.appendChild(sectionEditarCategorias);
@@ -146,15 +148,15 @@ function crearEventListeners() {
 }
 
 function eliminarCategoria(event) {
-  console.log("eliminar categoria ok");
+
   let index = event.target.id.replace("del-", "");
   eliminar.push(parseInt(index));
   document.getElementById(`cat-${index}`).style.display = "none";
   guardarAlert(seccionCat);
+  document.getElementById("mensajeGuardar").textContent = ""
 }
 
 function agregarNuevaCategoria() {
-  console.log("agregar nueva categoria ok");
   const indexNew = agregar.length;
   const fila = document.createElement("tr");
   fila.id = `newCat-${indexNew}`;
@@ -170,6 +172,7 @@ function agregarNuevaCategoria() {
   document.getElementById("listBody").appendChild(fila);
   agregar.push(indexNew);
   guardarAlert(seccionCat);
+  document.getElementById("mensajeGuardar").textContent = ""
 }
 
 function aplicarFiltros(event) {
@@ -189,7 +192,7 @@ function aplicarFiltros(event) {
 
 function guardarCambiosCat() {
   try {
-    // Gaurdar modificaciones en los inputs de las categorías existentes
+    // Guardar modificaciones en los inputs de las categorías existentes
     categorias.forEach((categoria, index) => {
       if (!categoria.isDeleted) {
         const check = document.getElementById(`isVis-${index}`).firstChild;
@@ -202,14 +205,12 @@ function guardarCambiosCat() {
     // Eliminar categorías
     if (eliminar.length > 0) {
       eliminar.forEach((catIndex) => {
-        console.log(catIndex);
         categorias[catIndex].isDeleted = true;
       });
     }
 
     // Agregar nuevas categorías
     if (agregar.length > 0) {
-      console.table(agregar);
       agregar.forEach((nuevoIndex) => {
         const isVisibleCh = document.getElementById(
           `newVis-${nuevoIndex}`
@@ -236,14 +237,14 @@ function guardarCambiosCat() {
           false
         );
         categorias.push(nuevaCat);
-
-        console.log(nuevaCat);
-        console.log(categorias);
       });
     }
     localStorage.setItem("categorias", JSON.stringify(categorias));
     editarCategorias();
+    document.getElementById("mensajeGuardar").textContent = "¡Cambios guardados!"
+
   } catch (error) {
     console.log(error);
+    document.getElementById("mensajeError").textContent = "Por favor revise los datos ingresados"
   }
 }
