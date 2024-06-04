@@ -5,7 +5,14 @@ export let movImportados = []
 // Home
 window.addEventListener("DOMContentLoaded", () => {
     cargarMovimientos()
-    showHome()
+    Swal.fire({
+        title: '¡Bienvenido a Financial Bee!',
+        text: 'La app que te ayudará a administrar tu presupuesto personal. En esta demo te mostraremos las configuraciones básicas para que empieces a registrar tus ingresos y gastos.',
+        confirmButtonText: 'Empezar'
+    })
+        .then((willConfirm) => {
+            showHome()
+        })
 });
 
 

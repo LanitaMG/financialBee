@@ -6,12 +6,12 @@ import { limpiarMainSection, crearEncabezado, crearAgregarBtn, crearSelectOption
 let eliminar = [];
 let agregar = [];
 const seccionMDP = "mdp";
-
+let cambiosRealizados = false
 
 
 export function editarMedioPago() {
   limpiarMainSection();
-  inicializarMP();
+  // inicializarMP();
   const encabezado = crearEncabezado(seccionMDP);
   const tabla = crearTablaMDP();
   const agregarBtn = crearAgregarBtn(seccionMDP);
@@ -33,6 +33,7 @@ export function editarMedioPago() {
 }
 
 function inicializarMP() {
+  cambiosRealizados = false
   eliminar = [];
   agregar = [];
   if (localStorage.getItem("mediosDePago")) {
@@ -86,6 +87,9 @@ function crearListaMDP() {
 }
 
 function crearEventListeners() {
+  document
+    .addEventListener("DOMContentLoaded", inicializarMP)
+
   mediosPago.forEach((element, index) => {
     if (!element.isDeleted) {
       document
@@ -93,17 +97,21 @@ function crearEventListeners() {
         .addEventListener("click", eliminarMedioPago);
     }
   });
+
   document
     .getElementById("agregarmdpBtn")
     .addEventListener("click", agregarNuevoMedio);
 
   document
     .getElementById("salirmdpBtn")
-    .addEventListener("click", showHome);
+    .addEventListener("click", verificarSalir);
 
   document
     .getElementById("guardarmdpBtn")
     .addEventListener("click", guardarCambiosMP);
+
+  document
+    .addEventListener("input", () => cambiosRealizados = true)
 }
 
 function agregarNuevoMedio() {
@@ -112,7 +120,7 @@ function agregarNuevoMedio() {
   fila.id = `newMP-${indexNew}`;
   fila.innerHTML = `               
       <td id="newVis-${indexNew}">${crearCheckbox(true)}</td>
-      <td id="newNom-${indexNew}"><input class="form-input"></td>
+      <td id="newNom-${indexNew}"><input class="form-input" placeholder="¿nombre?"></td>
       <td id="newTip-${indexNew}"><select class="form-select form-select-sm">${crearSelectOption(
     tiposMedioPago, "")}</select></td>
       <td><span class="badge bg-warning text-wrap" style="width: rem;">Nuevo</span></td>
@@ -121,6 +129,7 @@ function agregarNuevoMedio() {
   agregar.push(indexNew);
   document.getElementById("mensajeGuardar").textContent = ""
   guardarAlert(seccionMDP);
+  cambiosRealizados = true;
 
 }
 
@@ -130,57 +139,150 @@ function eliminarMedioPago(event) {
   let index = event.target.id.replace("del-", "");
   eliminar.push(parseInt(index));
   document.getElementById(`mdp-${index}`).style.display = "none";
+  cambiosRealizados = true
 }
 
 function guardarCambiosMP() {
-  try {
-    // Guardar las modificaciones ingresada en los inputs de medios existentes
-    mediosPago.forEach((medio, index) => {
-      if (!medio.isDeleted) {
-        const check = document.getElementById(`isVis-${index}`).firstChild;
-        medio.isVisible = check.checked;
-        const selOpt = document.getElementById(`tip-${index}`).firstChild;
-        medio.tipo = selOpt.value;
+  const mensajeGuardar = verificarModificaciones()
+  Swal.fire({
+    title: "¿Estás seguro?",
+    html: `${mensajeGuardar}`,
+    icon: "warning",
+    showDenyButton: true,
+    showCancelButton: false,
+    confirmButtonText: `Guardar`,
+    denyButtonText: `Cancelar`
+  }).then((result) => {
+    if (result.isConfirmed) {
+      try {
+        aplicarModificaciones()
+        agregarElementos()
+        eliminarElementos()
+        localStorage.setItem("mediosDePago", JSON.stringify(mediosPago));
+        Swal.fire("¡Cambios guardados!").then(() => {
+          editarMedioPago();
+        })
+      } catch (error) {
+        console.log(error);
+        Swal.fire({
+          title: "Algo salió mal",
+          text: "Por favor revisa los datos ingresados",
+          icon: "error",
+          confirmButtonText: "Aceptar",
+        })
       }
+    }
+    else {
+      eliminar.forEach(index => {
+        document.getElementById(`mdp-${index}`).style.display = "table-row";
+      });
+      editarMedioPago();
+    }
+  })
+}
+
+
+
+function verificarModificaciones() {
+  // Verificar modificaciones
+  let mod = 0
+  mediosPago.forEach((medio, index) => {
+    if (!medio.isDeleted) {
+      const check = document.getElementById(`isVis-${index}`).firstChild;
+      const selOpt = document.getElementById(`tip-${index}`).firstChild;
+      if (medio.isVisible !== check.checked || medio.tipo !== selOpt.value) {
+        mod += 1
+      }
+    }
+  })
+  return `<p>Se guardarán las siguentes ediciones: </p>
+                          <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0">
+                              Medios de pago modificados
+                              <span class="badge bg-dark rounded-pill">${mod}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0">
+                              Medios de pago agregados
+                              <span class="badge bg-dark rounded-pill">${agregar.length}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0">
+                              Medios de pago eliminados
+                              <span class="badge bg-dark rounded-pill">${eliminar.length}</span>
+                            </li>
+                         </ul> 
+                         <p class="small">Los registros eliminados no podrán ser recuperados.</p> `
+}
+
+
+
+
+
+function aplicarModificaciones() {
+  // Guardar las modificaciones ingresada en los inputs de medios existentes
+  mediosPago.forEach((medio, index) => {
+    if (!medio.isDeleted) {
+      const check = document.getElementById(`isVis-${index}`).firstChild;
+      medio.isVisible = check.checked;
+      const selOpt = document.getElementById(`tip-${index}`).firstChild;
+      medio.tipo = selOpt.value;
+    }
+  });
+
+}
+
+function eliminarElementos() {
+  // Eliminar medios
+  if (eliminar.length > 0) {
+    eliminar.forEach((medioIndex) => {
+      mediosPago[medioIndex].isDeleted = true;
     });
-
-    // Eliminar medios
-    if (eliminar.length > 0) {
-      eliminar.forEach((medioIndex) => {
-        mediosPago[medioIndex].isDeleted = true;
-      });
-    }
-
-    // Agregar nuevos medios
-    if (agregar.length > 0) {
-      agregar.forEach((nuevoIndex) => {
-        const id = nuevoIndex;
-        const isVisibleCh = document.getElementById(
-          `isVis-${nuevoIndex}`
-        ).firstChild;
-        const isVisible = isVisibleCh.checked;
-        const nombreInp = document.getElementById(
-          `newNom-${nuevoIndex}`
-        ).firstChild;
-        let nombre = nombreInp.value.trim();
-        if (nombre.length > 0) {
-          nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
-        } else nombre = "sin nombre";
-        const tipoSel = document.getElementById(
-          `newTip-${nuevoIndex}`
-        ).firstChild;
-        const tipo = tipoSel.value;
-        const nuevoMP = new MedioPago(id, nombre, tipo, isVisible, false);
-        mediosPago.push(nuevoMP);
-      });
-    }
-    localStorage.setItem("mediosDePago", JSON.stringify(mediosPago));
-    editarMedioPago();
-    document.getElementById("mensajeGuardar").textContent = "¡Cambios guardados!"
-  } catch (error) {
-    document.getElementById("mensajeError").textContent = "Por favor revise los datos ingresados"
-    console.log(error);
-
   }
 }
 
+function agregarElementos() {
+  // Agregar nuevos medios
+  if (agregar.length > 0) {
+    agregar.forEach((nuevoIndex) => {
+      const id = nuevoIndex;
+      const isVisibleCh = document.getElementById(
+        `isVis-${nuevoIndex}`
+      ).firstChild;
+      const isVisible = isVisibleCh.checked;
+      const nombreInp = document.getElementById(
+        `newNom-${nuevoIndex}`
+      ).firstChild;
+      let nombre = nombreInp.value.trim();
+      if (nombre.length > 0) {
+        nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+      } else nombre = "sin nombre";
+      const tipoSel = document.getElementById(
+        `newTip-${nuevoIndex}`
+      ).firstChild;
+      const tipo = tipoSel.value;
+      const nuevoMP = new MedioPago(id, nombre, tipo, isVisible, false);
+      mediosPago.push(nuevoMP);
+    });
+  }
+}
+
+
+function verificarSalir() {
+  if (cambiosRealizados) {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Se perderán los cambios realizados. ¿Desea continuar?",
+      icon: "warning",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: `Continuar`,
+      denyButtonText: `Cancelar`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        showHome()
+      }
+    })
+  }
+  else {
+    showHome()
+  }
+}

@@ -16,19 +16,14 @@ export function showHome() {
         <section id="sectionBalance" class="m-3 mx-auto" style="max-width: 720px">
         ${crearBalanceMovimientos(indiceBalance)}
         </section>
-        <section>
-          <div class="text-center m-3">
-            <button id="agregarMovBtn" class="btn btn-warning mx-auto m-5 px-5 py-3">
+        <section class="text-center p-3">
+            <button id="agregarMovBtn" class="btn btn-warning mx-auto my-3 px-5 py-3 d-block">
               Agregar movimientos
             <i class="bi bi-pencil-square"></i></button>
-          </div>
-        </section>
-        <section>
-            <div class="text-center m-3">
-              <button id="verMovBtn" class="btn btn-warning mx-auto m-5 px-5 py-3">
+              <button id="verMovBtn" class="btn btn-warning mx-auto my-3 px-5 py-3">
                   Ver movimientos
                   <i class="bi bi-search"></i></button>
-            </div>
+            
         </section>
         <section>
             <div class="m-3 text-center shadow  rounded mx-auto " style="max-width: 720px">
