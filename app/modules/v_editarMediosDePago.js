@@ -161,6 +161,7 @@ function guardarCambiosMP() {
         localStorage.setItem("mediosDePago", JSON.stringify(mediosPago));
         Swal.fire("¡Cambios guardados!").then(() => {
           editarMedioPago();
+          cambiosRealizados = false
         })
       } catch (error) {
         console.log(error);

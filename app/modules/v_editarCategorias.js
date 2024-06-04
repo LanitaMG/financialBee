@@ -240,6 +240,8 @@ function guardarCambiosCat() {
         localStorage.setItem("categorias", JSON.stringify(categorias));
         Swal.fire("¡Cambios guardados!").then(() => {
           editarCategorias();
+          cambiosRealizados = false
+
         })
       } catch (error) {
         console.log(error);
